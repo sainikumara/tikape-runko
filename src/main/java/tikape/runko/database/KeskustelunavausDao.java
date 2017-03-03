@@ -6,6 +6,7 @@
 package tikape.runko.database;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,9 +24,11 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
     public KeskustelunavausDao(Database database) {
         this.database = database;
-    }v
+    }
+    v
 
     @Override
+
     public Keskustelunavaus findOne(Integer alue) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelunavaus WHERE id = ?");
@@ -74,6 +77,59 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         return keskustelunavaukset;
     }
 
+    public List<String[]> lukumaaraPerKeskustelunavaus(Integer alue) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT "
+                + "Keskustelunavaus.otsikko AS avaus, "
+                + "COUNT (*) AS viesteja, "
+                + "MAX (Viesti.aika) AS uusin "
+                + "FROM Keskustelunavaus JOIN Viesti "
+                + "ON Viesti.avaus=Keskustelunavaus.id "
+                + "Keskustelunavaus.alue= ?"
+                + "GROUP BY Viesti.avaus ");
+
+        stmt.setObject(1, alue);
+
+        ResultSet rs = stmt.executeQuery();
+        List<String[]> keskustelunavaukset = new ArrayList<>();
+
+        while (rs.next()) {
+            String avaus = rs.getString("avaus");
+            String viesteja = rs.getString("viesteja");
+            long uusin = rs.getLong("uusin");
+
+            // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
+            Date timestamp = new Date(uusin * 1000);
+            String uusinStr = timestamp.toString();
+
+            String[] alueenTiedot = new String[3];
+            alueenTiedot[1] = avaus;
+            alueenTiedot[2] = viesteja;
+            alueenTiedot[3] = uusinStr;
+
+            keskustelunavaukset.add(alueenTiedot);
+
+        }
+        rs.close();
+        stmt.close();
+        connection.close();
+        return keskustelunavaukset;
+    }
+
+    public void addOne(Integer key, Integer alue, Long aika, String otsikko) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelunavaus VALUES (id = ?, alue = ?, aika= ?, otsikko= ?)");
+
+        stmt.setObject(1, key);
+        stmt.setObject(2, alue);
+        stmt.setObject(3, aika);
+        stmt.setObject(4, otsikko);
+        stmt.execute();
+
+        stmt.close();
+        connection.close();
+    }
+
     @Override
     public void delete(Integer key) throws SQLException {
 
@@ -84,6 +140,6 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         stmt2.setInt(1, key);
         stmt.execute();
         stmt.execute();
-    }   
+    }
 
 }
