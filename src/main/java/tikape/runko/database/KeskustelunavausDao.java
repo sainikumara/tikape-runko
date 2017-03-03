@@ -136,7 +136,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         stmt.execute();
     }   
     
-    public List<Keskustelunavaus> findAllInTopic(Integer topicid) throws SQLException {
+    public List<Keskustelunavaus> findAllInTopic(String topicid) throws SQLException {
 
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(

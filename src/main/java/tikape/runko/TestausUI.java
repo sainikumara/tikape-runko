@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.runko;
 
 import java.sql.Connection;
@@ -18,7 +13,7 @@ import tikape.runko.database.KeskustelualueDao;
 import tikape.runko.database.KeskustelunavausDao;
 import tikape.runko.database.ViestiDao;
 import tikape.runko.domain.Keskustelualue;
-import tikape.runko.database.Keskustelunavaus;
+import tikape.runko.domain.Keskustelunavaus;
 import tikape.runko.domain.Viesti;
 
 public class TestausUI {

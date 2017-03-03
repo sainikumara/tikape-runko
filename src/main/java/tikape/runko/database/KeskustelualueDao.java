@@ -138,7 +138,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         return keskustelualueet;
     }
     
-    public String getIdByTopic(String topic) throws SQLException {
+    public Integer getIdByTopic(String topic) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT id FROM Keskustelualue WHERE aihe = ?");
         stmt.setObject(1, topic);
@@ -153,6 +153,6 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         stmt.close();
         connection.close();
         
-        return rs.getString("id");
+        return rs.getInt("id");
     }
 }
