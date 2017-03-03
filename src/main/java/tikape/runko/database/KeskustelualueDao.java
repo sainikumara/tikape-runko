@@ -26,7 +26,6 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
         if (!hasOne) {
-            connection.close();
             return null;
         }
 
@@ -65,7 +64,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
     
     public void addOne(Integer key, String aihe) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viesti VALUES (id = ?, aihe = ?)");
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelualue VALUES (id = ?, aihe = ?)");
         
         stmt.setObject(1, key);
         stmt.setObject(2, aihe);
@@ -103,8 +102,8 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT "
                 + "Keskustelualue.aihe AS aihe, "
-                + "Count (Viesti.avaus) AS avauksia, "
-                + "Count (*) AS viesteja, "
+                + "COUNT (DISTINCT Viesti.avaus) AS avauksia, "
+                + "COUNT (*) AS viesteja, "
                 + "MAX (Viesti.aika) AS uusin "
                 + "FROM Keskustelualue JOIN Viesti "
                 + "ON Keskustelualue.id = Viesti.alue "
@@ -120,7 +119,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
             long uusin = rs.getLong("uusin");
             
             // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
-            Date timestamp = new Date(uusin);
+            Date timestamp = new Date(uusin * 1000);
             String uusinStr = timestamp.toString();
             
             String[] alueenTiedot = new String[4];
@@ -139,16 +138,21 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         return keskustelualueet;
     }
     
-    public Integer getIdByTopic(String topic) throws SQLException {
+    public String getIdByTopic(String topic) throws SQLException {
         Connection connection = database.getConnection();
-        ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM Keskustelualue");
-        while (rs.next()) {
-            if (rs.getString("aihe").equals(topic)) {
-                connection.close();
-                return rs.getInt("id");
-            }
+        PreparedStatement stmt = connection.prepareStatement("SELECT id FROM Keskustelualue WHERE aihe = ?");
+        stmt.setObject(1, topic);
+        ResultSet rs = stmt.executeQuery();
+        
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
         }
+        
+        rs.close();
+        stmt.close();
         connection.close();
-        return null;
+        
+        return rs.getString("id");
     }
 }

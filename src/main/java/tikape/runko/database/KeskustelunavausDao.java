@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tikape.runko.database;
 
+import tikape.runko.domain.Keskustelunavaus;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -12,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import tikape.runko.domain.Opiskelija;
 
 /**
  *
@@ -27,10 +23,10 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
     }
 
     @Override
-    public Keskustelunavaus findOne(Integer alue) throws SQLException {
+    public Keskustelunavaus findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelunavaus WHERE id = ?");
-        stmt.setObject(1, alue);
+        stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
@@ -39,6 +35,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         }
 
         Integer id = rs.getInt("id");
+        Integer alue = rs.getInt("alue");
         Integer aika = rs.getInt("aika");
         String otsikko = rs.getString("otsikko");
 
@@ -83,7 +80,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
                 + "MAX (Viesti.aika) AS uusin "
                 + "FROM Keskustelunavaus JOIN Viesti "
                 + "ON Viesti.avaus=Keskustelunavaus.id "
-                + "Keskustelunavaus.alue= ?"
+                + "Keskustelunavaus.alue = ?"
                 + "GROUP BY Viesti.avaus ");
 
         stmt.setObject(1, alue);
@@ -131,19 +128,20 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viesti WHERE avaus= ?");
-        PreparedStatement stmt2 = connection.prepareStatement("DELETE FROM Keskustelunavaus WHERE id= ?");
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viesti WHERE avaus = ?");
+        PreparedStatement stmt2 = connection.prepareStatement("DELETE FROM Keskustelunavaus WHERE id = ?");
         stmt.setInt(1, key);
         stmt2.setInt(1, key);
         stmt.execute();
         stmt.execute();
     }   
     
-    public List<Keskustelunavaus> findAllInTopic(String topicid) throws SQLException {
+    public List<Keskustelunavaus> findAllInTopic(Integer topicid) throws SQLException {
 
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT * FROM Keskustelunavaus WHERE alue=" + topicid);
+                "SELECT * FROM Keskustelunavaus WHERE alue = ?");
+        stmt.setObject(1, topicid);
 
         ResultSet rs = stmt.executeQuery();
         List<Keskustelunavaus> keskustelunavaukset = new ArrayList<>();
