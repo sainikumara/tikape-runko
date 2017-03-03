@@ -6,6 +6,7 @@
 package tikape.runko;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,21 +18,20 @@ import tikape.runko.database.KeskustelualueDao;
 import tikape.runko.database.ViestiDao;
 import tikape.runko.domain.Keskustelualue;
 
-/**
- *
- * @author eetu
- */
 public class TestausUI {
     
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
         
+
         System.out.println("Hello. Please give a name for the database file. " +
+
                 "Include .db");
         String filename = sc.nextLine();
         
         Database database = new Database("jdbc:sqlite:" + filename);
         database.init();
+
         KeskustelualueDao alueDao = new KeskustelualueDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
         
@@ -113,6 +113,7 @@ public class TestausUI {
                 String statement = sc.nextLine();
                 
                 Connection con = db.getConnection();
+
                 ResultSet rs = con.createStatement().executeQuery(statement);
         
                 while(rs.next()) {
@@ -128,6 +129,7 @@ public class TestausUI {
                 }
                 con.close();
             } else if (mode.equals("u")) {
+
                 System.out.println("Enter statement:");
                 String statement = sc.nextLine();
                 try {
