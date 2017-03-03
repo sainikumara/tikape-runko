@@ -15,8 +15,11 @@ import java.util.List;
 import java.util.Scanner;
 import tikape.runko.database.Database;
 import tikape.runko.database.KeskustelualueDao;
+import tikape.runko.database.KeskustelunavausDao;
 import tikape.runko.database.ViestiDao;
 import tikape.runko.domain.Keskustelualue;
+import tikape.runko.database.Keskustelunavaus;
+import tikape.runko.domain.Viesti;
 
 public class TestausUI {
     
@@ -34,6 +37,7 @@ public class TestausUI {
 
         KeskustelualueDao alueDao = new KeskustelualueDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
+        KeskustelunavausDao avausDao = new KeskustelunavausDao(database);
         
         
         while(true) {
@@ -48,7 +52,7 @@ public class TestausUI {
             } else if (modOrTest.equals("mod")) {
                 enterModifyState(database, sc);
             } else if (modOrTest.equals("test")) {
-                enterTestState(database, sc, alueDao, viestiDao);
+                enterTestState(database, sc, alueDao, avausDao, viestiDao);
             }
         }
         System.out.println("Bye.");
@@ -56,8 +60,8 @@ public class TestausUI {
     
     private static void enterModifyState(Database db, Scanner sc) throws SQLException {
         System.out.println("Entering database modification.\n");
-        System.out.println("q\tquery\nu\tupdate\nl\tlist all tables\n" +
-                "t\tlist contents of a single table\nexit\texit program\n" +
+        System.out.println("q\tquery\nu\tupdate\ns\tlist schemas\nl\tlist all tables\n" +
+                "t\tlist contents of a single table\nexit\texit mod state\n" +
                 "help\tshow this list\n");
         while(true) {
             System.out.println("Enter desired command.");
@@ -67,8 +71,8 @@ public class TestausUI {
                 System.out.println("Quitting database modification.");
                 break;
             } else if (mode.equals("help")) {
-                System.out.println("q\tquery\nu\tupdate\nl\tlist all tables\n" +
-                    "t\tlist contents of a single table\nexit\texit modification\n" +
+                System.out.println("q\tquery\nu\tupdate\ns\tlist schemas\nl\tlist all tables\n" +
+                    "t\tlist contents of a single table\nexit\texit mod state\n" +
                     "help\tshow this list\n");
             } else if (mode.equals("l")) {
                 Connection con = db.getConnection();
@@ -129,15 +133,39 @@ public class TestausUI {
                 }
                 con.close();
             } else if (mode.equals("u")) {
-
                 System.out.println("Enter statement:");
                 String statement = sc.nextLine();
                 try {
                     db.update(statement);
                 } catch (Throwable t) {}
+            } else if (mode.equals("s")) {
+                Connection con = db.getConnection();
+                ResultSet rs = con.createStatement().executeQuery(
+                        "SELECT name FROM sqlite_master WHERE type='table'");
+       
+                while(rs.next()) {
+                    String table = rs.getString("name");
+                    ResultSet rs2 = con.createStatement().executeQuery(
+                            "PRAGMA TABLE_INFO(" + table + ")");
+                    System.out.println(table);
+                    for (int j = 0; j < table.length(); j++) {
+                        System.out.print("-");
+                    }
+                    System.out.println("");
+                    while(rs2.next()) {
+                        for (int i = 2; i <= 3; i++) {
+                            System.out.print(rs2.getString(i) + " ");
+                        }
+                        System.out.println("");
+                    }
+                    System.out.println("");
+                }
+                System.out.println("");
+                con.close();
+                
             } else {
                 System.out.println("Unknown command.");
-                System.out.println("q\tquery\nu\tupdate\nl\tlist all tables\n" +
+                System.out.println("q\tquery\nu\tupdate\ns\tlist schemas\nl\tlist all tables\n" +
                     "t\tlist contents of a single table\nexit\texit program\n" +
                     "help\tshow this list\n");
             }
@@ -145,8 +173,8 @@ public class TestausUI {
     }
     
     private static void enterTestState(Database db, Scanner sc,
-            KeskustelualueDao ad, ViestiDao vd) throws SQLException {
-        System.out.println("This is a testing UI for the forum");
+            KeskustelualueDao ad, KeskustelunavausDao kd, ViestiDao vd) throws SQLException {
+        System.out.println("This is a testing UI for the forum\nAll topics:");
         List<String> topics = printAndGetTopics(ad);
         while(true) {
             System.out.println("Submit topic to enter or 'exit' to leave.");
@@ -155,7 +183,7 @@ public class TestausUI {
             if (command.equals("exit")) {
                 break;
             } else if (topics.contains(command)) {
-                enterTopic(ad.getIdByTopic(command));
+                enterTopic(sc, ad.getIdByTopic(command), kd, vd);
             } else {
                 System.out.println("Unknown command.");
             }
@@ -166,19 +194,89 @@ public class TestausUI {
     private static List<String> printAndGetTopics(KeskustelualueDao ad) throws SQLException {
         List<String> names = new ArrayList<>();
         for (String[] info : ad.lukumaaratPerKA()) {
-            System.out.format("%s\tthreads: %s\tmessages: %s\t%s\n",
+            System.out.format("%s\tthreads: %s\tmessages: %s\tlast: %s\n",
                     info[0], info[1], info[2], info[3]);
             names.add(info[0]);
         }
         return names;
     }
     
-    private static void enterTopic(String topic) {
-        // todo
+    private static void enterTopic(Scanner sc, Integer topic, KeskustelunavausDao kd,
+            ViestiDao vd) throws SQLException{
+        System.out.println("\nAll threads for this topic.");
+        List<Integer> threadids = printAndGetThreads(kd);
+        int id = -1;
+        while(true) {
+            System.out.println("Enter thread ID to view or 'list' to list threads");
+            String command = sc.nextLine();
+            if (command.equals("list")) {
+                printAndGetThreads(kd);
+                continue;
+            }
+            try {
+                id = Integer.parseInt(command);
+            } catch (Throwable t) {
+                System.out.println("Not a valid number.");
+                continue;
+            }
+            
+            if (threadids.contains(id)) {
+                enterThread(sc, vd, id, topic);
+            } else {
+                System.out.println("Not a valid thread id.");
+                continue;
+            }
+        }
     }
     
-    private static List<String> printAndGetThreads() {
-        return null;
+    private static List<Integer> printAndGetThreads(KeskustelunavausDao kd) throws SQLException{
+        List<Keskustelunavaus> threads = kd.findAll();
+        List<Integer> threadids = new ArrayList<>();
+        for (Keskustelunavaus ka : threads) {
+            System.out.format("id: %s\totsikko: %s\t%s\n",
+                    ka.getId(), ka.getOtsikko(), ka.getAika());
+            threadids.add(ka.getId());
+        }
+        return threadids;
+    }
+    
+    private static void enterThread(Scanner sc, ViestiDao vd, int threadid,
+            int topicid) throws SQLException {
+        System.out.println("All messages in this thread\n");
+        List<Viesti> messages = vd.findAllThread(threadid);
+        for (Viesti m : messages) {
+            System.out.format("%s\t%s\n%s\n\n",
+                    m.getNimimerkki(), m.getAika(), m.getSisalto());
+        }
+        while(true) {
+            System.out.println("Enter command\nnm\tnew message\nlist\tlist messages\n" +
+                    "back\tback to threads");
+            String command = sc.nextLine();
+            if (command.equals("nm")) {
+                createMessage(sc, threadid, topicid, vd);
+            } else if (command.equals("back")) {
+                return;
+            } else if (command.equals("list")) {
+                messages = vd.findAllThread(threadid);
+                for (Viesti m : messages) {
+                    System.out.format("%s\t%s\n%s\n\n",
+                    m.getNimimerkki(), m.getAika(), m.getSisalto());
+                }
+            } else {
+                System.out.println("Unknown command.");
+            }
+        }
+        
+    }
+    
+    private static void createMessage(Scanner sc, int threadid,
+            int topicid, ViestiDao vd) throws SQLException {
+        System.out.println("Enter name:");
+        String name = sc.nextLine();
+        System.out.println("Enter message (max 1000 characters):");
+        String message = sc.nextLine();
+        vd.addOne(topicid, threadid, name, message);
+        System.out.println("Message sent.\n");
     }
     
 }

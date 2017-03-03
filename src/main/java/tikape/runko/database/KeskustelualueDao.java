@@ -26,6 +26,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
         if (!hasOne) {
+            connection.close();
             return null;
         }
 
@@ -138,14 +139,16 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         return keskustelualueet;
     }
     
-    public String getIdByTopic(String topic) throws SQLException {
+    public Integer getIdByTopic(String topic) throws SQLException {
         Connection connection = database.getConnection();
         ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM Keskustelualue");
         while (rs.next()) {
             if (rs.getString("aihe").equals(topic)) {
-                return rs.getString("id");
+                connection.close();
+                return rs.getInt("id");
             }
         }
+        connection.close();
         return null;
     }
 }

@@ -23,7 +23,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
     public KeskustelunavausDao(Database database) {
         this.database = database;
-    }v
+    }
 
     @Override
     public Keskustelunavaus findOne(Integer alue) throws SQLException {
@@ -76,7 +76,6 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viesti WHERE avaus= ?");
         PreparedStatement stmt2 = connection.prepareStatement("DELETE FROM Keskustelunavaus WHERE id= ?");
@@ -85,5 +84,29 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         stmt.execute();
         stmt.execute();
     }   
+    
+    public List<Keskustelunavaus> findAllInTopic(String topicid) throws SQLException {
+
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(
+                "SELECT * FROM Keskustelunavaus WHERE alue=" + topicid);
+
+        ResultSet rs = stmt.executeQuery();
+        List<Keskustelunavaus> keskustelunavaukset = new ArrayList<>();
+        while (rs.next()) {
+            Integer id = rs.getInt("id");
+            Integer alue = rs.getInt("alue");
+            Integer aika = rs.getInt("aika");
+            String otsikko = rs.getString("otsikko");
+
+            keskustelunavaukset.add(new Keskustelunavaus(id, alue, aika, otsikko));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return keskustelunavaukset;
+    }
 
 }

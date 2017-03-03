@@ -9,7 +9,7 @@ package tikape.runko.database;
  *
  * @author lvikstro
  */
-class Keskustelunavaus {
+public class Keskustelunavaus {
     private int id;
     private int alue;
     private int aika; 

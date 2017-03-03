@@ -71,16 +71,17 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return keskustelualueet;
     }
     
-    public void addOne(Integer uusiId, Integer viestinAlue, Integer viestinAvaus, Integer viestinAika, String kirjoittajanNimimerkki, String viestinSisalto) throws SQLException {
+    public void addOne(Integer viestinAlue, Integer viestinAvaus, 
+            String kirjoittajanNimimerkki, String viestinSisalto) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viesti VALUES (id = ?, alue = ?, avaus = ?, aika = ?, nimimerkki = ?, sisalto = ?)");
+        PreparedStatement stmt = connection.prepareStatement(
+                "INSERT INTO Viesti (alue, avaus, nimimerkki, sisalto) " +
+                "VALUES (?, ?, ?, ?)");
         
-        stmt.setObject(1, uusiId);
-        stmt.setObject(2, viestinAlue);
-        stmt.setObject(3, viestinAvaus);
-        stmt.setObject(4, viestinAika);
-        stmt.setObject(5, kirjoittajanNimimerkki);
-        stmt.setObject(6, viestinSisalto);
+        stmt.setObject(1, viestinAlue);
+        stmt.setObject(2, viestinAvaus);
+        stmt.setObject(3, kirjoittajanNimimerkki);
+        stmt.setObject(4, viestinSisalto);
         
         stmt.execute();
         
@@ -134,5 +135,30 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         connection.close();
 
         return keskustelualueet;
+    }
+    
+    public List<Viesti> findAllThread(int threadid) throws SQLException {
+        Connection connection = database.getConnection();
+        ResultSet rs = connection.createStatement().executeQuery(
+                "SELECT * FROM Viesti WHERE avaus=" + threadid);
+        
+        List<Viesti> viestit = new ArrayList<>();
+        while (rs.next()) {
+            Integer id = rs.getInt("id");
+            int alue = rs.getInt("alue");
+            int avaus = rs.getInt("avaus");
+            int aika = rs.getInt("aika");
+            String nimimerkki = rs.getString("nimimerkki");
+            String sisalto = rs.getString("sisalto");
+        
+            Viesti v = new Viesti(id, alue, avaus, aika, nimimerkki, sisalto);
+
+            viestit.add(v);
+        }
+
+        rs.close();
+        connection.close();
+
+        return viestit;
     }
 }
