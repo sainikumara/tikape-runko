@@ -8,11 +8,12 @@ import tikape.runko.database.Database;
 import tikape.runko.database.OpiskelijaDao;
 import tikape.runko.database.KeskustelualueDao;
 import tikape.runko.database.ViestiDao;
+import tikape.runko.database.KeskustelunavausDao;
+import tikape.runko.domain.Keskustelualue;
+import tikape.runko.domain.Viesti;
 import java.util.ArrayList;
 import java.util.List;
-import tikape.runko.database.KeskustelunavausDao;
-import tikape.runko.domain.Viesti;
-
+import tikape.runko.domain.Keskustelunavaus;
 
 public class Main {
 
@@ -26,29 +27,38 @@ public class Main {
         ViestiDao vd = new ViestiDao(database);
 
         get("/", (req, res) -> {
-            HashMap map = new HashMap<>();          
+            HashMap map = new HashMap<>();
             List<List> ka = kaDao.lukumaaratPerKA();
 
             map.put("keskustelualueet", ka);
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
-                
+
         get("/topic/:id", (req, res) -> {
-           HashMap map = new HashMap<>();
-           
-           List<List> avaukset = 
-                   avausDao.lukumaaraPerKeskustelunavaus(Integer.parseInt(req.params(":id")));
-           map.put("threads", avaukset);
-           
-           return new ModelAndView(map, "topic");
+            HashMap map = new HashMap<>();
+
+            Keskustelualue alue = kaDao.findOne(Integer.parseInt(req.params(":id")));
+            String aihe = alue.getAihe();
+            map.put("aihe", aihe);
+
+            List<List> avaukset
+                    = avausDao.lukumaaraPerKeskustelunavaus(Integer.parseInt(req.params(":id")));
+            map.put("threads", avaukset);
+
+            return new ModelAndView(map, "topic");
         }, new ThymeleafTemplateEngine());
-        
+
         get("/thread/:id", (req, res) -> {
-           HashMap map = new HashMap<>();
-           List<List> viestit = vd.findAllInThread(Integer.parseInt(req.params(":id")));
-           map.put("viestit", viestit);
-           return new ModelAndView(map, "thread");
+            HashMap map = new HashMap<>();
+
+            Keskustelunavaus alue = avausDao.findOne(Integer.parseInt(req.params(":id")));
+            String otsikko = alue.getOtsikko();
+            map.put("otsikko", otsikko);
+
+            List<List> viestit = vd.findAllInThread(Integer.parseInt(req.params(":id")));
+            map.put("viestit", viestit);
+            return new ModelAndView(map, "thread");
         }, new ThymeleafTemplateEngine());
 
         get("/opiskelijat/:id", (req, res) -> {
