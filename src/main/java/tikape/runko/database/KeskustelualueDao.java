@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import tikape.runko.domain.Keskustelualue;
 
 public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
@@ -121,7 +122,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
             
             // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
             Date timestamp = new Date(uusin * 1000);
-            String uusinStr = timestamp.toString();
+            String uusinStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
             
             List<String> kaTiedot = new ArrayList<>();
             kaTiedot.add(id);

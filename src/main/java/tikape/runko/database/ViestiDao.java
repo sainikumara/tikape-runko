@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Viesti;
@@ -154,7 +155,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             List<String> tiedot = new ArrayList<>();
             long aika = rs.getLong("aika");
             Date timestamp = new Date(aika * 1000);
-            String aikastr = timestamp.toString();
+            String aikastr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
             
             tiedot.add(rs.getString("id"));
             tiedot.add(rs.getString("alue"));

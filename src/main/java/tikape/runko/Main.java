@@ -53,6 +53,7 @@ public class Main {
             HashMap map = new HashMap<>();
 
             List<List> viestit = vd.findAllInThread(Integer.parseInt(req.params(":id")));
+            
             List<String> viestinTiedot = viestit.get(0);
             int alueenId = Integer.parseInt(viestinTiedot.get(1));
             int avauksenId = Integer.parseInt(viestinTiedot.get(2));
