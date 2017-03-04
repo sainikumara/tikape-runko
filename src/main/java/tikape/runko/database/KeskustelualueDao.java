@@ -62,12 +62,11 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         return keskustelualueet;
     }
     
-    public void addOne(Integer key, String aihe) throws SQLException {
+    public void addOne(String aihe) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelualue VALUES (id = ?, aihe = ?)");
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelualue VALUES (aihe = ?)");
         
-        stmt.setObject(1, key);
-        stmt.setObject(2, aihe);
+        stmt.setObject(1, aihe);
         
         stmt.execute();
         
@@ -149,10 +148,12 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
             return null;
         }
         
+        int id = rs.getInt("id");
+        
         rs.close();
         stmt.close();
         connection.close();
         
-        return rs.getInt("id");
+        return id;
     }
 }

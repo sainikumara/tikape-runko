@@ -238,7 +238,7 @@ public class TestausUI {
     private static void enterThread(Scanner sc, ViestiDao vd, int threadid,
             int topicid) throws SQLException {
         System.out.println("All messages in this thread\n");
-        List<Viesti> messages = vd.findAllThread(threadid);
+        List<Viesti> messages = vd.findAllInThread(threadid);
         for (Viesti m : messages) {
             System.out.format("%s\t%s\n%s\n\n",
                     m.getNimimerkki(), m.getAika(), m.getSisalto());
@@ -252,7 +252,7 @@ public class TestausUI {
             } else if (command.equals("back")) {
                 return;
             } else if (command.equals("list")) {
-                messages = vd.findAllThread(threadid);
+                messages = vd.findAllInThread(threadid);
                 for (Viesti m : messages) {
                     System.out.format("%s\t%s\n%s\n\n",
                     m.getNimimerkki(), m.getAika(), m.getSisalto());

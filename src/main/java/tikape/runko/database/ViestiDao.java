@@ -75,8 +75,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             String kirjoittajanNimimerkki, String viestinSisalto) throws SQLException {
         Connection connection = database.getConnection();
        PreparedStatement stmt = connection.prepareStatement(
-                 "INSERT INTO Viesti (alue, avaus, aika, nimimerkki, sisalto) " +
-                 "VALUES (?, ?, now, ?, ?)");
+                 "INSERT INTO Viesti (alue, avaus, nimimerkki, sisalto) " +
+                 "VALUES (?, ?, ?, ?)");
        
 
         stmt.setObject(1, viestinAlue);
@@ -113,7 +113,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         connection.close();
     }
     
-    public List<Viesti> findAllTopic(String topicId) throws SQLException {
+    public List<Viesti> findAllInTopic(String topicId) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE alue = ?");
         stmt.setObject(1, topicId);
@@ -141,7 +141,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return keskustelualueet;
     }
     
-    public List<Viesti> findAllThread(int threadid) throws SQLException {
+    public List<Viesti> findAllInThread(int threadid) throws SQLException {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE avaus = ?");
