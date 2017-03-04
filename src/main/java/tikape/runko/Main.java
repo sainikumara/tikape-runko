@@ -84,8 +84,8 @@ public class Main {
         
 
         post("/uusialue", (req, res) -> {
-            kaDao.addOne(req.queryParams("name"));
-            int alueid = kaDao.getIdByTopic(req.queryParams("name"));
+            kaDao.addOne(req.queryParams("topic"));
+            int alueid = kaDao.getIdByTopic(req.queryParams("topic"));
             avausDao.addOne(alueid, "Alueen kuvaus");
             int avausid = avausDao.getIdByTitle("Alueen kuvaus");
             vd.addOne(alueid, avausid,
