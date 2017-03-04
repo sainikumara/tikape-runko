@@ -4,6 +4,7 @@
     <head>
         <title>Keskustelunavaus</title>
         <meta charset="UTF-8"></meta>
+        <link rel="stylesheet" href="/style.css" type="text/css" />
     </head>
 
     <body>
@@ -12,12 +13,12 @@
         <table>
             <thead>
                 <tr>
-                    <td>Alue</td><td>Viestej&#228;</td><td>Uusin viesti</td>
+                    <td class="left">Alue</td><td>Viestej&#228;</td><td>Uusin viesti</td>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="th : ${threads}">
-                    <td><a th:href="${'/thread/' + th[0]}"><span th:text="${th[1]}"></span></a></td>
+                    <td class="left"><a th:href="${'/thread/' + th[0]}"><span th:text="${th[1]}"></span></a></td>
                     <td th:text="${th[2]}"></td>
                     <td th:text="${th[3]}"></td>
                 </tr>

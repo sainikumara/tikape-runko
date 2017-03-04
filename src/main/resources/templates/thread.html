@@ -4,6 +4,7 @@
     <head>
         <title>Keskustelu</title>
         <meta charset="UTF-8"></meta>
+        <link rel="stylesheet" href="/style.css" type="text/css" />
     </head>
 
     <body>
@@ -13,20 +14,20 @@
         <table>
             <thead>
                 <tr>
-                    <td>Nimimerkki</td><td>aika</td><td>viesti</td>
+                    <td class="left">Nimimerkki</td><td>aika</td><td class="left">viesti</td>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="v : ${viestit}">
-                    <td th:text="${v[3]}"></td>
+                    <td class="left" th:text="${v[3]}"></td>
                     <td th:text="${v[5]}"></td>
-                    <td th:text="${v[4]}"></td>
+                    <td class="left" th:text="${v[4]}"></td>
                 </tr>
             </tbody>
         </table>
         
         <form method="POST" th:action="@{~/msg(alue=${alueenId},avaus=${avauksenId})}">
-            <textarea id="message" class="text" cols="50" rows ="20" name="message">kirjoita viesti tähän</textarea>
+            <textarea id="message" class="text" cols="50" rows ="20" name="message">kirjoita viesti t&#228;h&#228;n</textarea>
             
             <div>
                 <label>Nimimerkki: </label>

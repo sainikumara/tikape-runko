@@ -12,31 +12,33 @@
         <table>
             <thead>
                 <tr>
-                    <td>Alue</td><td>Keskustelunavauksia</td><td>Viestej&#228;</td><td>Uusin viesti</td>
+                    <td class="left">Alue</td><td>Keskustelunavauksia</td><td>Viestej&#228;</td><td>Uusin viesti</td>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="ka : ${keskustelualueet}">
-                    <td><a th:href="${'/topic/' + ka[0]}"><span th:text="${ka[1]}"></span></a></td>
-                    <td class="center" th:text="${ka[2]}"></td>
-                    <td class="center" th:text="${ka[3]}"></td>
+                    <td class="left"><a th:href="${'/topic/' + ka[0]}"><span th:text="${ka[1]}"></span></a></td>
+                    <td th:text="${ka[2]}"></td>
+                    <td th:text="${ka[3]}"></td>
                     <td th:text="${ka[4]}"></td>
-                   
+
                 </tr>
             </tbody>
         </table>
 
-        <form method="POST" th:action="@{~/uusialue}">
-            <div>
-                <span>Uuden alueen nimi: </span>
-                <input type="text" name="topic"/>
-            </div>
-            <div>
-                <textarea id="aloitus" class="text" cols="50" rows="20" name="aloitus">Anna lyhyt kuvaus alueesta</textarea>
-            </div>
-            <span>Nimimerkki:</span>
-            <input type="text" name="name"></input>
-            <input type="submit" value="lisää alue"/>
-        </form>
+        <div class="lomake">
+            <form method="POST" th:action="@{~/uusialue}">
+                <div>
+                    <span>Uuden alueen nimi: </span>
+                    <input type="text" name="topic"/>
+                </div>
+                <div>
+                    <textarea id="aloitus" class="text" cols="50" rows="20" name="aloitus">Anna lyhyt kuvaus alueesta</textarea>
+                </div>
+                <span>Nimimerkki:</span>
+                <input type="text" name="name"></input>
+                <input type="submit" value="lisää alue"/>
+            </form>
+        </div>
     </body>
 </html>
