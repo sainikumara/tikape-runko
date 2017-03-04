@@ -100,7 +100,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
     public List<List> lukumaaratPerKA() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT "
-                + "Keskustelualue.id AS id"
+                + "Keskustelualue.id AS id, "
                 + "Keskustelualue.aihe AS aihe, "
                 + "COUNT (DISTINCT Viesti.avaus) AS avauksia, "
                 + "COUNT (*) AS viesteja, "

@@ -11,6 +11,7 @@ import tikape.runko.database.ViestiDao;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.database.KeskustelunavausDao;
+import tikape.runko.domain.Viesti;
 
 
 public class Main {
@@ -22,6 +23,7 @@ public class Main {
         OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
         KeskustelualueDao kaDao = new KeskustelualueDao(database);
         KeskustelunavausDao avausDao = new KeskustelunavausDao(database);
+        ViestiDao vd = new ViestiDao(database);
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -44,21 +46,21 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
                 
-        get("/thread/:id", (req, res) -> {
+        get("/topic/:id", (req, res) -> {
            HashMap map = new HashMap<>();
            
            List<List> avaukset = 
                    avausDao.lukumaaraPerKeskustelunavaus(Integer.parseInt(req.params(":id")));
            map.put("threads", avaukset);
            
-           return new ModelAndView(map, "thread");
+           return new ModelAndView(map, "topic");
         }, new ThymeleafTemplateEngine());
-
-        get("/opiskelijat", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("opiskelijat", opiskelijaDao.findAll());
-
-            return new ModelAndView(map, "opiskelijat");
+        
+        get("/thread/:id", (req, res) -> {
+           HashMap map = new HashMap<>();
+           List<List> viestit = vd.findAllInThread(Integer.parseInt(req.params(":id")));
+           map.put("viestit", viestit);
+           return new ModelAndView(map, "thread");
         }, new ThymeleafTemplateEngine());
 
         get("/opiskelijat/:id", (req, res) -> {

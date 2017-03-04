@@ -188,11 +188,11 @@ public class TestausUI {
     
     private static List<String> printAndGetTopics(KeskustelualueDao ad) throws SQLException {
         List<String> names = new ArrayList<>();
-        for (String[] info : ad.lukumaaratPerKA()) {
-            System.out.format("%s\tthreads: %s\tmessages: %s\tlast: %s\n",
-                    info[0], info[1], info[2], info[3]);
-            names.add(info[0]);
-        }
+//        for (String[] info : ad.lukumaaratPerKA()) {
+//            System.out.format("%s\tthreads: %s\tmessages: %s\tlast: %s\n",
+//                    info[0], info[1], info[2], info[3]);
+//            names.add(info[0]);
+//        }
         return names;
     }
     

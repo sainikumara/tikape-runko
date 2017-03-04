@@ -1,6 +1,7 @@
 package tikape.runko.database;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -141,25 +142,28 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return keskustelualueet;
     }
     
-    public List<Viesti> findAllInThread(int threadid) throws SQLException {
+    public List<List> findAllInThread(int threadid) throws SQLException {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE avaus = ?");
         stmt.setObject(1, threadid);
         ResultSet rs = stmt.executeQuery();
          
-        List<Viesti> viestit = new ArrayList<>();
+        List<List> viestit = new ArrayList<>();
         while (rs.next()) {
-            Integer id = rs.getInt("id");
-            int alue = rs.getInt("alue");
-            int avaus = rs.getInt("avaus");
-            int aika = rs.getInt("aika");
-            String nimimerkki = rs.getString("nimimerkki");
-            String sisalto = rs.getString("sisalto");
-        
-            Viesti v = new Viesti(id, alue, avaus, aika, nimimerkki, sisalto);
- 
-            viestit.add(v);
+            List<String> tiedot = new ArrayList<>();
+            long aika = rs.getLong("aika");
+            Date timestamp = new Date(aika * 1000);
+            String aikastr = timestamp.toString();
+            
+            tiedot.add(rs.getString("id"));
+            tiedot.add(rs.getString("alue"));
+            tiedot.add(rs.getString("avaus"));
+            tiedot.add(rs.getString("nimimerkki"));
+            tiedot.add(rs.getString("sisalto"));
+            tiedot.add(aikastr);
+            
+            viestit.add(tiedot);
         }
 
         rs.close();

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Keskustelu</title>
+        <title>Keskustelunavaus</title>
         <meta charset="UTF-8"></meta>
     </head>
 
@@ -10,14 +10,14 @@
         <table>
             <thead>
                 <tr>
-                    <td>Nimimerkki</td><td>aika</td><td>viesti</td>
+                    <td>Alue</td><td>Viestejä</td><td>Uusin viesti</td>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="v : ${viestit}">
-                    <td th:text="${v[3]}"></td>
-                    <td th:text="${v[4]}"></td>
-                    <td th:text="${v[5]}"></td>
+                <tr th:each="th : ${threads}">
+                    <td><a th:href="${'/thread/' + th[3]}"><span th:text="${th[0]}"></span></a></td>
+                    <td th:text="${th[1]}"></td>
+                    <td th:text="${th[2]}"></td>
                 </tr>
             </tbody>
         </table>
