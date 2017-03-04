@@ -63,7 +63,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         return keskustelualueet;
     }
     
-    public void addOne(String aihe) throws SQLException {
+    public Integer addOne(String aihe) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelualue (aihe) VALUES (?)");
         
@@ -71,8 +71,13 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         
         stmt.execute();
         
+        ResultSet rs = stmt.getGeneratedKeys();
+        int alueenId = rs.getInt(1);
+        
         stmt.close();
         connection.close();
+        
+        return alueenId;
     }
 
     @Override

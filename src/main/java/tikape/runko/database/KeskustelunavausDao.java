@@ -118,7 +118,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         return keskustelunavaukset;
     }
 
-    public void addOne(Integer alue, String otsikko) throws SQLException {
+    public Integer addOne(Integer alue, String otsikko) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
                 "INSERT INTO Keskustelunavaus (alue, otsikko, aika) VALUES (?, ?, ?)");
@@ -129,9 +129,14 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         stmt.setObject(2, otsikko);
         stmt.setTimestamp(3, currentTime);
         stmt.execute();
+        
+        ResultSet rs = stmt.getGeneratedKeys();
+        int avauksenId = rs.getInt(1);
 
-        stmt.close();
+        stmt.close();       
         connection.close();
+        
+        return avauksenId;
     }
 
     @Override

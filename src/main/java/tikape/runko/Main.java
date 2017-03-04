@@ -41,10 +41,13 @@ public class Main {
 
             Keskustelualue alue = kaDao.findOne(Integer.parseInt(req.params(":id")));
             String aihe = alue.getAihe();
-            map.put("aihe", aihe);
+            
 
             List<List> avaukset
                     = avausDao.lukumaaraPerKeskustelunavaus(Integer.parseInt(req.params(":id")));
+            
+            map.put("alueId", alue.getId());
+            map.put("aihe", aihe);
             map.put("threads", avaukset);
 
             return new ModelAndView(map, "topic");
@@ -85,26 +88,29 @@ public class Main {
 
         post("/uusialue", (req, res) -> {
             try {
-                kaDao.addOne(req.queryParams("topic"));
+                int alueenId = kaDao.addOne(req.queryParams("topic"));
+                int avauksenId = avausDao.addOne(alueenId, "Alueen kuvaus");
+                vd.addOne(alueenId, avauksenId,
+                    req.queryParams("name"), req.queryParams("aloitus"));
             } catch (Throwable t) {
                 res.redirect("/");
                 return "";
             }
             
-            int alueid = kaDao.getIdByTopic(req.queryParams("topic"));
-            avausDao.addOne(alueid, "Alueen kuvaus");
-            int avausid = avausDao.getIdByTitle("Alueen kuvaus");
-            vd.addOne(alueid, avausid,
-                    req.queryParams("name"), req.queryParams("aloitus"));
+            //int alueid = kaDao.getIdByTopic(req.queryParams("topic"));
+            //avausDao.addOne(alueid, "Alueen kuvaus");
+            //int avausid = avausDao.getIdByTitle("Alueen kuvaus");
+            //vd.addOne(alueid, avausid,
+            //        req.queryParams("name"), req.queryParams("aloitus"));
             
             res.redirect("/");
             return "";
         });
         
         post("topic/uusiavaus", (req, res) -> {
-            int alueid = kaDao.getIdByTopic(req.queryParams("aihe"));
-            avausDao.addOne(alueid, req.queryParams("title"));
-            int avausid = avausDao.getIdByTitle(req.queryParams("title"));
+            int alueid = Integer.parseInt(req.queryParams("alueId"));
+            int avausid = avausDao.addOne(alueid, req.queryParams("title"));
+            //int avausid = avausDao.getIdByTitle(req.queryParams("title"));
             vd.addOne(alueid, avausid,
                     req.queryParams("name"), req.queryParams("msg"));
             res.redirect("/thread/" + Integer.toString(avausid));
