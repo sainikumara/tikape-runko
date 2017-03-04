@@ -10,6 +10,7 @@ import tikape.runko.database.KeskustelualueDao;
 import tikape.runko.database.ViestiDao;
 import java.util.ArrayList;
 import java.util.List;
+import tikape.runko.database.KeskustelunavausDao;
 
 
 public class Main {
@@ -20,6 +21,7 @@ public class Main {
 
         OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
         KeskustelualueDao kaDao = new KeskustelualueDao(database);
+        KeskustelunavausDao avausDao = new KeskustelunavausDao(database);
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -40,6 +42,16 @@ public class Main {
             map.put("keskustelualueet", ka);
 
             return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+                
+        get("/thread/:id", (req, res) -> {
+           HashMap map = new HashMap<>();
+           
+           List<List> avaukset = 
+                   avausDao.lukumaaraPerKeskustelunavaus(Integer.parseInt(req.params(":id")));
+           map.put("threads", avaukset);
+           
+           return new ModelAndView(map, "thread");
         }, new ThymeleafTemplateEngine());
 
         get("/opiskelijat", (req, res) -> {
