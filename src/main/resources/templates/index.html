@@ -16,9 +16,11 @@
             </thead>
             <tbody>
                 <tr th:each="ka : ${keskustelualueet}">
-                    <td th:each="tiedot : ${ka}">
-                        <span th:text="${tiedot}"></span>
-                    </td>
+                    <td><a th:href="${'/thread/' + ka[0]}"><span th:text="${ka[1]}"></span></a></td>
+                    <td th:text="${ka[2]}"></td>
+                    <td th:text="${ka[3]}"></td>
+                    <td th:text="${ka[4]}"></td>
+                   
                 </tr>
             </tbody>
         </table>
