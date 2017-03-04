@@ -8,17 +8,13 @@
 
     <body>
         <h1>TIKAPE-KESKUSTELUFOORUMI</h1>
-
-        <div id="keskustelualueet">
-            <ul id="ka-lista">
-                <li th:each="ka : ${keskustelualueet}">
-                    <span th:text="${ka}">keskustelualueen tiedot</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
-
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p> -->
+        <table>
+            <tr th:each="ka : ${keskustelualueet}">
+                <td th:each="tiedot : ${ka}">
+                    <span th:text="${tiedot}"></span>
+                </td>
+            </tr>
+        </table>
+        
     </body>
 </html>
