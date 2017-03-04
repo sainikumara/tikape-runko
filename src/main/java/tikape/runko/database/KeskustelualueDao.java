@@ -100,6 +100,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
     public List<List> lukumaaratPerKA() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT "
+                + "Keskustelualue.id AS id"
                 + "Keskustelualue.aihe AS aihe, "
                 + "COUNT (DISTINCT Viesti.avaus) AS avauksia, "
                 + "COUNT (*) AS viesteja, "
@@ -112,6 +113,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         List<List> keskustelualueet = new ArrayList<>();
         
         while (rs.next()) {
+            String id = rs.getString("id");
             String aihe = rs.getString("aihe");
             String avauksia = rs.getString("avauksia");
             String viesteja = rs.getString("viesteja");
@@ -122,17 +124,11 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
             String uusinStr = timestamp.toString();
             
             List<String> kaTiedot = new ArrayList<>();
-            
+            kaTiedot.add(id);
             kaTiedot.add(aihe);
             kaTiedot.add(avauksia);
             kaTiedot.add(viesteja);
             kaTiedot.add(uusinStr);
-            
-//            String[] alueenTiedot = new String[4];
-//            alueenTiedot[0] = aihe;
-//            alueenTiedot[1] = avauksia;
-//            alueenTiedot[2] = viesteja;
-//            alueenTiedot[3] = uusinStr;
             
             keskustelualueet.add(kaTiedot);
         }
