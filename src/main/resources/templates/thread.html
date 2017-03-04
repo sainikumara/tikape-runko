@@ -26,7 +26,7 @@
         </table>
         
         <form method="POST" th:action="@{~/msg(alue=${alueenId},avaus=${avauksenId})}">
-            <textarea id="message" class="text" cols="50" rows ="20" name="message"></textarea>
+            <textarea id="message" class="text" cols="50" rows ="20" name="message">kirjoita viesti tähän</textarea>
             <input type="text" name="name"/>
             <input type="submit" value="send"/>
         </form>

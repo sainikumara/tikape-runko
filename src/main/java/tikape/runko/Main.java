@@ -80,5 +80,27 @@ public class Main {
             res.redirect("/thread/" + req.queryParams("avaus"));
             return "";
         });
+        
+        post("/uusialue", (req, res) -> {
+            kaDao.addOne(req.queryParams("name"));
+            int alueid = kaDao.getIdByTopic(req.queryParams("name"));
+            avausDao.addOne(alueid, "Alueen kuvaus");
+            int avausid = avausDao.getIdByTitle("Alueen kuvaus");
+            vd.addOne(alueid, avausid,
+                    req.queryParams("name"), req.queryParams("aloitus"));
+            
+            res.redirect("/");
+            return "";
+        });
+        
+        post("topic/uusiavaus", (req, res) -> {
+            int alueid = kaDao.getIdByTopic(req.queryParams("aihe"));
+            avausDao.addOne(alueid, req.queryParams("title"));
+            int avausid = avausDao.getIdByTitle(req.queryParams("title"));
+            vd.addOne(alueid, avausid,
+                    req.queryParams("name"), req.queryParams("msg"));
+            res.redirect("/thread/" + Integer.toString(avausid));
+            return ""; 
+        });
     }
 }

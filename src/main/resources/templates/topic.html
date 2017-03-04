@@ -23,5 +23,17 @@
                 </tr>
             </tbody>
         </table>
+        <form method="POST" th:action="@{~/topic/uusiavaus(aihe=${aihe})}">
+            <div>
+                <span>Keskustelun otsikko:</span>
+                <input type="text" name="title"/>
+            </div>
+            <div>
+                <textarea id="msg" class="text" cols="50" rows="20" name="msg">aloitusviesti</textarea>
+            </div>
+            <span>Nimimerkki:</span>
+            <input type="text" name="name"></input>
+            <input type="submit" value="lähetä"/>
+        </form>
     </body>
 </html>

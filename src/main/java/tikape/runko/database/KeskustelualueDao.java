@@ -65,9 +65,9 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
     
     public void addOne(String aihe) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelualue VALUES (aihe = ?)");
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelualue (aihe) VALUES (?)");
         
-        stmt.setObject(1, aihe);
+        stmt.setString(1, aihe);
         
         stmt.execute();
         

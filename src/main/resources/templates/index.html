@@ -25,5 +25,17 @@
             </tbody>
         </table>
 
+        <form method="POST" th:action="@{~/uusialue}">
+            <div>
+                <span>Uuden alueen nimi: </span>
+                <input type="text" name="topic"/>
+            </div>
+            <div>
+                <textarea id="aloitus" class="text" cols="50" rows="20" name="aloitus">Anna lyhyt kuvaus alueesta</textarea>
+            </div>
+            <span>Nimimerkki:</span>
+            <input type="text" name="name"></input>
+            <input type="submit" value="lisää alue"/>
+        </form>
     </body>
 </html>
