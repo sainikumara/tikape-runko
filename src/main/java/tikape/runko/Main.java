@@ -59,21 +59,25 @@ public class Main {
             
             Keskustelualue aktiivinenAlue = kaDao.findOne(alueenId);
             String aihe = aktiivinenAlue.getAihe();
+            String aiheid = Integer.toString(aktiivinenAlue.getId());
             Keskustelunavaus alue = avausDao.findOne(avauksenId);
             String otsikko = alue.getOtsikko();
             
             map.put("alueenId", alueenId);
             map.put("aihe", aihe);
+            map.put("avauksenId", avauksenId);
             map.put("otsikko", otsikko);
             map.put("viestit", viestit);
             return new ModelAndView(map, "thread");
         }, new ThymeleafTemplateEngine());
 
-        get("/opiskelijat/:id", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("opiskelija", opiskelijaDao.findOne(Integer.parseInt(req.params("id"))));
-
-            return new ModelAndView(map, "opiskelija");
-        }, new ThymeleafTemplateEngine());
+        post("/msg", (req, res) -> {
+            vd.addOne(Integer.parseInt(req.queryParams("alue")),
+                    Integer.parseInt(req.queryParams("avaus")),
+                    req.queryParams("name"),
+                    req.queryParams("message"));
+            res.redirect("/thread/" + req.queryParams("avaus"));
+            return "";
+        });
     }
 }
