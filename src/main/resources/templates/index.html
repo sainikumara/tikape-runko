@@ -9,12 +9,19 @@
     <body>
         <h1>TIKAPE-KESKUSTELUFOORUMI</h1>
         <table>
-            <tr th:each="ka : ${keskustelualueet}">
-                <td th:each="tiedot : ${ka}">
-                    <span th:text="${tiedot}"></span>
-                </td>
-            </tr>
+            <thead>
+                <tr>
+                    <td>Alue</td><td>Keskustelunavauksia</td><td>Viestejä</td><td>Uusin viesti</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="ka : ${keskustelualueet}">
+                    <td th:each="tiedot : ${ka}">
+                        <span th:text="${tiedot}"></span>
+                    </td>
+                </tr>
+            </tbody>
         </table>
-        
+
     </body>
 </html>
