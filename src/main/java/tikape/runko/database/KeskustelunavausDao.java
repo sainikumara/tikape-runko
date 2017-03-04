@@ -10,10 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author lvikstro
- */
+
 public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
     private Database database;
@@ -74,48 +71,46 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
     public List<List> lukumaaraPerKeskustelunavaus(Integer alue) throws SQLException {
         Connection connection = database.getConnection();
-//        PreparedStatement stmt = connection.prepareStatement("SELECT "
-//                + "Keskustelunavaus.otsikko AS avaus, "
-//                + "COUNT (*) AS viesteja, "
-//                + "MAX (Viesti.aika) AS uusin "
-//                + "FROM Keskustelunavaus JOIN Viesti "
-//                + "ON Viesti.avaus=Keskustelunavaus.id "
-//                + "Keskustelunavaus.alue = ? "
-//                + "GROUP BY Viesti.avaus");
-//
-//        stmt.setObject(1, alue);
-//
-//        ResultSet rs = stmt.executeQuery();
+        PreparedStatement stmt = connection.prepareStatement("SELECT "
+                + "Keskustelunavaus.id AS id, "
+                + "Keskustelunavaus.otsikko AS avaus, "
+                + "COUNT (*) AS viesteja, "
+                + "MAX (Viesti.aika) AS uusin "
+                + "FROM Keskustelunavaus JOIN Viesti "
+                + "ON Viesti.avaus=Keskustelunavaus.id "
+                + "AND Keskustelunavaus.alue = ? "
+                + "GROUP BY Viesti.avaus");
 
-        ResultSet rs = connection.createStatement().executeQuery(
-                "SELECT Keskustelunavaus.otsikko AS avaus, COUNT (*) AS viesteja, " 
-                + "MAX (Viesti.aika) AS uusin, Keskustelunavaus.id AS id "
-                + "FROM Keskustelunavaus JOIN Viesti " 
-                + "ON Viesti.avaus=Keskustelunavaus.id AND Keskustelunavaus.alue="
-                + Integer.toString(alue).trim() + " GROUP BY Viesti.avaus");
+        stmt.setObject(1, alue);
+
+        ResultSet rs = stmt.executeQuery();
+
         List<List> keskustelunavaukset = new ArrayList<>();
 
         while (rs.next()) {
+            String id = rs.getString("id");
             String avaus = rs.getString("avaus");
             String viesteja = rs.getString("viesteja");
             long uusin = rs.getLong("uusin");
-            String avausid = rs.getString("id");
 
             // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
             Date timestamp = new Date(uusin * 1000);
             String uusinStr = timestamp.toString();
-            
+
             List<String> tiedot = new ArrayList<>();
             
+            tiedot.add(id);
             tiedot.add(avaus);
             tiedot.add(viesteja);
             tiedot.add(uusinStr);
-            tiedot.add(avausid);
-            
+
             keskustelunavaukset.add(tiedot);
 
         }
         rs.close();
+
+        stmt.close();
+
         connection.close();
         return keskustelunavaukset;
     }

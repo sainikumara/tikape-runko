@@ -15,9 +15,9 @@
             </thead>
             <tbody>
                 <tr th:each="th : ${threads}">
-                    <td><a th:href="${'/thread/' + th[3]}"><span th:text="${th[0]}"></span></a></td>
-                    <td th:text="${th[1]}"></td>
+                    <td><a th:href="${'/thread/' + th[0]}"><span th:text="${th[1]}"></span></a></td>
                     <td th:text="${th[2]}"></td>
+                    <td th:text="${th[3]}"></td>
                 </tr>
             </tbody>
         </table>

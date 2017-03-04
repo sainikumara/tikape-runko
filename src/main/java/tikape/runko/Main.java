@@ -26,21 +26,9 @@ public class Main {
         ViestiDao vd = new ViestiDao(database);
 
         get("/", (req, res) -> {
-            HashMap map = new HashMap<>();
-            
+            HashMap map = new HashMap<>();          
             List<List> ka = kaDao.lukumaaratPerKA();
-            
-            for (List<String> tiedot : ka) {
-                for (String str : tiedot) {
-                    System.out.println(str);
-                }
-            }
-            
-//            List<String> kaStr = new ArrayList<>();
-//            for (String[] alue : ka) {
-//                kaStr.add(alue[0] + "\t" + alue[1] + "\t" + alue[2] + "\t" + alue[3] + "\n");
-//            }
-//            KORVAA TAULUKKO ARRAYLISTILLA?
+
             map.put("keskustelualueet", ka);
 
             return new ModelAndView(map, "index");

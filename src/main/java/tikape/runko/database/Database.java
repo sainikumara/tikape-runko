@@ -39,16 +39,16 @@ public class Database {
     private List<String> sqliteLauseet() {
         ArrayList<String> lista = new ArrayList<>();
         // Lauseet tietokantataulujen luomiseen
-        lista.add("CREATE TABLE Keskustelualue (" +
+        lista.add("CREATE TABLE IF NOT EXISTS Keskustelualue (" +
                     "id integer PRIMARY KEY, " +
                     "aihe varchar(50) NOT NULL UNIQUE);");
-        lista.add("CREATE TABLE Keskustelunavaus (" +
+        lista.add("CREATE TABLE IF NOT EXISTS  Keskustelunavaus (" +
                     "id integer PRIMARY KEY, " + 
                     "alue integer NOT NULL, " +
                     "aika timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
                     "otsikko varchar(200) NOT NULL UNIQUE, " +
                     "FOREIGN KEY(alue) REFERENCES Keskustelualue(id));");
-        lista.add("CREATE TABLE Viesti (" +
+        lista.add("CREATE TABLE IF NOT EXISTS  Viesti (" +
                     "id integer PRIMARY KEY, " +
                     "alue integer NOT NULL, " +
                     "avaus integer NOT NULL, " + 

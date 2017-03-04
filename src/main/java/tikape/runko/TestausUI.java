@@ -178,7 +178,7 @@ public class TestausUI {
             if (command.equals("exit")) {
                 break;
             } else if (topics.contains(command)) {
-                enterTopic(sc, ad.getIdByTopic(command), kd, vd);
+                //enterTopic(sc, ad.getIdByTopic(command), kd, vd);
             } else {
                 System.out.println("Unknown command.");
             }
@@ -196,33 +196,33 @@ public class TestausUI {
         return names;
     }
     
-    private static void enterTopic(Scanner sc, Integer topic, KeskustelunavausDao kd,
-            ViestiDao vd) throws SQLException{
-        System.out.println("\nAll threads for this topic.");
-        List<Integer> threadids = printAndGetThreads(kd);
-        int id = -1;
-        while(true) {
-            System.out.println("Enter thread ID to view or 'list' to list threads");
-            String command = sc.nextLine();
-            if (command.equals("list")) {
-                printAndGetThreads(kd);
-                continue;
-            }
-            try {
-                id = Integer.parseInt(command);
-            } catch (Throwable t) {
-                System.out.println("Not a valid number.");
-                continue;
-            }
-            
-            if (threadids.contains(id)) {
-                enterThread(sc, vd, id, topic);
-            } else {
-                System.out.println("Not a valid thread id.");
-                continue;
-            }
-        }
-    }
+//    private static void enterTopic(Scanner sc, Integer topic, KeskustelunavausDao kd,
+//            ViestiDao vd) throws SQLException{
+//        System.out.println("\nAll threads for this topic.");
+//        List<Integer> threadids = printAndGetThreads(kd);
+//        int id = -1;
+//        while(true) {
+//            System.out.println("Enter thread ID to view or 'list' to list threads");
+//            String command = sc.nextLine();
+//            if (command.equals("list")) {
+//                printAndGetThreads(kd);
+//                continue;
+//            }
+//            try {
+//                id = Integer.parseInt(command);
+//            } catch (Throwable t) {
+//                System.out.println("Not a valid number.");
+//                continue;
+//            }
+//            
+//            if (threadids.contains(id)) {
+//                enterThread(sc, vd, id, topic);
+//            } else {
+//                System.out.println("Not a valid thread id.");
+//                continue;
+//            }
+//        }
+//    }
     
     private static List<Integer> printAndGetThreads(KeskustelunavausDao kd) throws SQLException{
         List<Keskustelunavaus> threads = kd.findAll();
@@ -235,34 +235,34 @@ public class TestausUI {
         return threadids;
     }
     
-    private static void enterThread(Scanner sc, ViestiDao vd, int threadid,
-            int topicid) throws SQLException {
-        System.out.println("All messages in this thread\n");
-        List<Viesti> messages = vd.findAllInThread(threadid);
-        for (Viesti m : messages) {
-            System.out.format("%s\t%s\n%s\n\n",
-                    m.getNimimerkki(), m.getAika(), m.getSisalto());
-        }
-        while(true) {
-            System.out.println("Enter command\nnm\tnew message\nlist\tlist messages\n" +
-                    "back\tback to threads");
-            String command = sc.nextLine();
-            if (command.equals("nm")) {
-                createMessage(sc, threadid, topicid, vd);
-            } else if (command.equals("back")) {
-                return;
-            } else if (command.equals("list")) {
-                messages = vd.findAllInThread(threadid);
-                for (Viesti m : messages) {
-                    System.out.format("%s\t%s\n%s\n\n",
-                    m.getNimimerkki(), m.getAika(), m.getSisalto());
-                }
-            } else {
-                System.out.println("Unknown command.");
-            }
-        }
-        
-    }
+//    private static void enterThread(Scanner sc, ViestiDao vd, int threadid,
+//            int topicid) throws SQLException {
+//        System.out.println("All messages in this thread\n");
+//        List<Viesti> messages = vd.findAllInThread(threadid);
+//        for (Viesti m : messages) {
+//            System.out.format("%s\t%s\n%s\n\n",
+//                    m.getNimimerkki(), m.getAika(), m.getSisalto());
+//        }
+//        while(true) {
+//            System.out.println("Enter command\nnm\tnew message\nlist\tlist messages\n" +
+//                    "back\tback to threads");
+//            String command = sc.nextLine();
+//            if (command.equals("nm")) {
+//                createMessage(sc, threadid, topicid, vd);
+//            } else if (command.equals("back")) {
+//                return;
+//            } else if (command.equals("list")) {
+//                messages = vd.findAllInThread(threadid);
+//                for (Viesti m : messages) {
+//                    System.out.format("%s\t%s\n%s\n\n",
+//                    m.getNimimerkki(), m.getAika(), m.getSisalto());
+//                }
+//            } else {
+//                System.out.println("Unknown command.");
+//            }
+//        }
+//        
+//    }
     
     private static void createMessage(Scanner sc, int threadid,
             int topicid, ViestiDao vd) throws SQLException {
