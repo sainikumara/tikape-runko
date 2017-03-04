@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +96,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
             // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
             Date timestamp = new Date(uusin * 1000);
-            String uusinStr = timestamp.toString();
+            String uusinStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
 
             List<String> tiedot = new ArrayList<>();
             
