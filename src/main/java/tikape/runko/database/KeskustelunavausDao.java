@@ -89,7 +89,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
         ResultSet rs = connection.createStatement().executeQuery(
                 "SELECT Keskustelunavaus.otsikko AS avaus, COUNT (*) AS viesteja, " 
-                + "MAX (Viesti.aika) AS uusin, Keskustelunavaus.alue AS alue "
+                + "MAX (Viesti.aika) AS uusin, Keskustelunavaus.id AS id "
                 + "FROM Keskustelunavaus JOIN Viesti " 
                 + "ON Viesti.avaus=Keskustelunavaus.id AND Keskustelunavaus.alue="
                 + Integer.toString(alue).trim() + " GROUP BY Viesti.avaus");
@@ -99,7 +99,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
             String avaus = rs.getString("avaus");
             String viesteja = rs.getString("viesteja");
             long uusin = rs.getLong("uusin");
-            String alueid = rs.getString("alue");
+            String avausid = rs.getString("id");
 
             // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
             Date timestamp = new Date(uusin * 1000);
@@ -110,7 +110,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
             tiedot.add(avaus);
             tiedot.add(viesteja);
             tiedot.add(uusinStr);
-            tiedot.add(alueid);
+            tiedot.add(avausid);
             
             keskustelunavaukset.add(tiedot);
 
