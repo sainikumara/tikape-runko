@@ -97,7 +97,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
     
     // Tämän metodin avulla saadaan etusivulle keskustelualueittain avauksien ja
     // viestien lukumäärät ja uusimpien viestien lähetysajankohdat
-    public List<String[]> lukumaaratPerKA() throws SQLException {
+    public List<List> lukumaaratPerKA() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT "
                 + "Keskustelualue.aihe AS aihe, "
@@ -109,7 +109,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
                 + "GROUP BY Viesti.alue");
         
         ResultSet rs = stmt.executeQuery();
-        List<String[]> keskustelualueet = new ArrayList<>();
+        List<List> keskustelualueet = new ArrayList<>();
         
         while (rs.next()) {
             String aihe = rs.getString("aihe");
@@ -121,13 +121,20 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
             Date timestamp = new Date(uusin * 1000);
             String uusinStr = timestamp.toString();
             
-            String[] alueenTiedot = new String[4];
-            alueenTiedot[0] = aihe;
-            alueenTiedot[1] = avauksia;
-            alueenTiedot[2] = viesteja;
-            alueenTiedot[3] = uusinStr;
+            List<String> kaTiedot = new ArrayList<>();
             
-            keskustelualueet.add(alueenTiedot);
+            kaTiedot.add(aihe);
+            kaTiedot.add(avauksia);
+            kaTiedot.add(viesteja);
+            kaTiedot.add(uusinStr);
+            
+//            String[] alueenTiedot = new String[4];
+//            alueenTiedot[0] = aihe;
+//            alueenTiedot[1] = avauksia;
+//            alueenTiedot[2] = viesteja;
+//            alueenTiedot[3] = uusinStr;
+            
+            keskustelualueet.add(kaTiedot);
         }
 
         rs.close();
