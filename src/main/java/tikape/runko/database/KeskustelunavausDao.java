@@ -111,14 +111,12 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         return keskustelunavaukset;
     }
 
-    public void addOne(Integer key, Integer alue, Long aika, String otsikko) throws SQLException {
+    public void addOne(Integer alue, String otsikko) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelunavaus VALUES (id = ?, alue = ?, aika= ?, otsikko= ?)");
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelunavaus VALUES (alue = ?, otsikko= ?)");
 
-        stmt.setObject(1, key);
-        stmt.setObject(2, alue);
-        stmt.setObject(3, aika);
-        stmt.setObject(4, otsikko);
+        stmt.setObject(1, alue);
+        stmt.setObject(2, otsikko);
         stmt.execute();
 
         stmt.close();
