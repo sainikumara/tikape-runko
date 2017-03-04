@@ -25,15 +25,17 @@
                 </tr>
             </tbody>
         </table>
-        
-        <form method="POST" th:action="@{~/msg(alue=${alueenId},avaus=${avauksenId})}">
-            <textarea id="message" class="text" cols="50" rows ="20" name="message">kirjoita viesti t&#228;h&#228;n</textarea>
-            
-            <div>
-                <label>Nimimerkki: </label>
-                <input type="text" name="name"/>
-                <input type="submit" value="send"/>
-            </div>
-        </form>
+
+        <div class="lomake">
+            <form method="POST" th:action="@{~/msg(alue=${alueenId},avaus=${avauksenId})}">
+                <textarea id="message" class="text" cols="50" rows ="20" name="message">kirjoita viesti t&#228;h&#228;n</textarea>
+
+                <div>
+                    <label>Nimimerkki: </label>
+                    <input type="text" name="name"/>
+                    <input type="submit" value="l&#228;het&#228; viesti"/>
+                </div>
+            </form>
+        </div>
     </body>
 </html>

@@ -13,7 +13,7 @@
         <table>
             <thead>
                 <tr>
-                    <td class="left">Alue</td><td>Viestej&#228;</td><td>Uusin viesti</td>
+                    <td class="left">Keskustelunavaus</td><td>Viestej&#228;</td><td>Uusin viesti</td>
                 </tr>
             </thead>
             <tbody>
@@ -24,17 +24,20 @@
                 </tr>
             </tbody>
         </table>
-        <form method="POST" th:action="@{~/topic/uusiavaus(aihe=${aihe})}">
-            <div>
-                <span>Keskustelun otsikko:</span>
-                <input type="text" name="title"/>
-            </div>
-            <div>
-                <textarea id="msg" class="text" cols="50" rows="20" name="msg">aloitusviesti</textarea>
-            </div>
-            <span>Nimimerkki:</span>
-            <input type="text" name="name"></input>
-            <input type="submit" value="lähetä"/>
-        </form>
+
+        <div class="lomake">
+            <form method="POST" th:action="@{~/topic/uusiavaus(aihe=${aihe})}">
+                <div>
+                    <span>Keskustelun otsikko:</span>
+                    <input type="text" name="title"/>
+                </div>
+                <div>
+                    <textarea id="msg" class="text" cols="50" rows="20" name="msg">aloitusviesti</textarea>
+                </div>
+                <span>Nimimerkki:</span>
+                <input type="text" name="name"></input>
+                <input type="submit" value="lis&#228;&#228; keskustelunavaus"/>
+            </form>
+        </div>
     </body>
 </html>
