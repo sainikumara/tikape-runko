@@ -74,18 +74,24 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
     public List<List> lukumaaraPerKeskustelunavaus(Integer alue) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT "
-                + "Keskustelunavaus.otsikko AS avaus, "
-                + "COUNT (*) AS viesteja, "
-                + "MAX (Viesti.aika) AS uusin "
-                + "FROM Keskustelunavaus JOIN Viesti "
-                + "ON Viesti.avaus=Keskustelunavaus.id "
-                + "Keskustelunavaus.alue = ?"
-                + "GROUP BY Viesti.avaus ");
+//        PreparedStatement stmt = connection.prepareStatement("SELECT "
+//                + "Keskustelunavaus.otsikko AS avaus, "
+//                + "COUNT (*) AS viesteja, "
+//                + "MAX (Viesti.aika) AS uusin "
+//                + "FROM Keskustelunavaus JOIN Viesti "
+//                + "ON Viesti.avaus=Keskustelunavaus.id "
+//                + "Keskustelunavaus.alue = ? "
+//                + "GROUP BY Viesti.avaus");
+//
+//        stmt.setObject(1, alue);
+//
+//        ResultSet rs = stmt.executeQuery();
 
-        stmt.setObject(1, alue);
-
-        ResultSet rs = stmt.executeQuery();
+        ResultSet rs = connection.createStatement().executeQuery(
+                "SELECT Keskustelunavaus.otsikko AS avaus, COUNT (*) AS viesteja, " 
+                + "MAX (Viesti.aika) AS uusin FROM Keskustelunavaus JOIN Viesti " 
+                + "ON Viesti.avaus=Keskustelunavaus.id AND Keskustelunavaus.alue="
+                + Integer.toString(alue).trim() + " GROUP BY Viesti.avaus");
         List<List> keskustelunavaukset = new ArrayList<>();
 
         while (rs.next()) {
@@ -112,7 +118,6 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
         }
         rs.close();
-        stmt.close();
         connection.close();
         return keskustelunavaukset;
     }
