@@ -72,7 +72,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         return keskustelunavaukset;
     }
 
-    public List<String[]> lukumaaraPerKeskustelunavaus(Integer alue) throws SQLException {
+    public List<List> lukumaaraPerKeskustelunavaus(Integer alue) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT "
                 + "Keskustelunavaus.otsikko AS avaus, "
@@ -86,7 +86,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         stmt.setObject(1, alue);
 
         ResultSet rs = stmt.executeQuery();
-        List<String[]> keskustelunavaukset = new ArrayList<>();
+        List<List> keskustelunavaukset = new ArrayList<>();
 
         while (rs.next()) {
             String avaus = rs.getString("avaus");
@@ -96,13 +96,19 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
             // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
             Date timestamp = new Date(uusin * 1000);
             String uusinStr = timestamp.toString();
+            
+            List<String> tiedot = new ArrayList<>();
+            
+            tiedot.add(avaus);
+            tiedot.add(viesteja);
+            tiedot.add(uusinStr);
+//            
+//            String[] alueenTiedot = new String[3];
+//            alueenTiedot[1] = avaus;
+//            alueenTiedot[2] = viesteja;
+//            alueenTiedot[3] = uusinStr;
 
-            String[] alueenTiedot = new String[3];
-            alueenTiedot[1] = avaus;
-            alueenTiedot[2] = viesteja;
-            alueenTiedot[3] = uusinStr;
-
-            keskustelunavaukset.add(alueenTiedot);
+            keskustelunavaukset.add(tiedot);
 
         }
         rs.close();
