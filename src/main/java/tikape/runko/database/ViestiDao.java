@@ -5,8 +5,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import tikape.runko.domain.Viesti;
 
@@ -76,16 +78,17 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public void addOne(Integer viestinAlue, Integer viestinAvaus, 
             String kirjoittajanNimimerkki, String viestinSisalto) throws SQLException {
         Connection connection = database.getConnection();
-       PreparedStatement stmt = connection.prepareStatement(
-                 "INSERT INTO Viesti (alue, avaus, nimimerkki, sisalto) " +
-                 "VALUES (?, ?, ?, ?)");
+        PreparedStatement stmt = connection.prepareStatement(
+                 "INSERT INTO Viesti (alue, avaus, nimimerkki, sisalto, aika) " +
+                 "VALUES (?, ?, ?, ?, ?)");
        
+        Timestamp currentTime = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()/1000);
 
         stmt.setObject(1, viestinAlue);
         stmt.setObject(2, viestinAvaus);
         stmt.setObject(3, kirjoittajanNimimerkki);
         stmt.setObject(4, viestinSisalto);
-        
+        stmt.setTimestamp(5, currentTime);
         stmt.execute();
         
         stmt.close();

@@ -7,8 +7,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -118,10 +120,14 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
     public void addOne(Integer alue, String otsikko) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelunavaus VALUES (alue = ?, otsikko= ?)");
+        PreparedStatement stmt = connection.prepareStatement(
+                "INSERT INTO Keskustelunavaus VALUES (alue = ?, otsikko = ?, aika = ?)");
+        
+        Timestamp currentTime = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()/1000);
 
         stmt.setObject(1, alue);
         stmt.setObject(2, otsikko);
+        stmt.setTimestamp(3, currentTime);
         stmt.execute();
 
         stmt.close();
