@@ -52,11 +52,19 @@ public class Main {
         get("/thread/:id", (req, res) -> {
             HashMap map = new HashMap<>();
 
-            Keskustelunavaus alue = avausDao.findOne(Integer.parseInt(req.params(":id")));
-            String otsikko = alue.getOtsikko();
-            map.put("otsikko", otsikko);
-
             List<List> viestit = vd.findAllInThread(Integer.parseInt(req.params(":id")));
+            List<String> viestinTiedot = viestit.get(0);
+            int alueenId = Integer.parseInt(viestinTiedot.get(1));
+            int avauksenId = Integer.parseInt(viestinTiedot.get(2));
+            
+            Keskustelualue aktiivinenAlue = kaDao.findOne(alueenId);
+            String aihe = aktiivinenAlue.getAihe();
+            Keskustelunavaus alue = avausDao.findOne(avauksenId);
+            String otsikko = alue.getOtsikko();
+            
+            map.put("alueenId", alueenId);
+            map.put("aihe", aihe);
+            map.put("otsikko", otsikko);
             map.put("viestit", viestit);
             return new ModelAndView(map, "thread");
         }, new ThymeleafTemplateEngine());

@@ -8,7 +8,8 @@
 
     <body>
         <h1><a href="/">TIKAPE-KESKUSTELUFOORUMI</a></h1>
-        <h2 th:text="${otsikko}"></h2>
+        <h2><a th:href="${'/topic/' + alueenId}"><span th:text="${aihe}"></span></a> / <span th:text="${otsikko}"></span></h2>
+
         <table>
             <thead>
                 <tr>
