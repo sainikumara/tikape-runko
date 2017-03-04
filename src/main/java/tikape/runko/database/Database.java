@@ -46,7 +46,7 @@ public class Database {
                     "id integer PRIMARY KEY, " + 
                     "alue integer NOT NULL, " +
                     "aika timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
-                    "otsikko varchar(200) NOT NULL UNIQUE, " +
+                    "otsikko varchar(200) NOT NULL, " +
                     "FOREIGN KEY(alue) REFERENCES Keskustelualue(id));");
         lista.add("CREATE TABLE IF NOT EXISTS  Viesti (" +
                     "id integer PRIMARY KEY, " +
