@@ -5,7 +5,6 @@ import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
-import tikape.runko.database.OpiskelijaDao;
 import tikape.runko.database.KeskustelualueDao;
 import tikape.runko.database.ViestiDao;
 import tikape.runko.database.KeskustelunavausDao;
@@ -13,6 +12,7 @@ import tikape.runko.domain.Keskustelualue;
 import tikape.runko.domain.Viesti;
 import java.util.ArrayList;
 import java.util.List;
+import spark.Spark;
 import tikape.runko.domain.Keskustelunavaus;
 
 public class Main {
@@ -20,8 +20,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Database database = new Database("jdbc:sqlite:foorumi.db");
         database.init();
+        
+        Spark.staticFileLocation("/templates");
 
-        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
         KeskustelualueDao kaDao = new KeskustelualueDao(database);
         KeskustelunavausDao avausDao = new KeskustelunavausDao(database);
         ViestiDao vd = new ViestiDao(database);
@@ -81,6 +82,7 @@ public class Main {
             return "";
         });
         
+
         post("/uusialue", (req, res) -> {
             kaDao.addOne(req.queryParams("name"));
             int alueid = kaDao.getIdByTopic(req.queryParams("name"));
@@ -102,5 +104,6 @@ public class Main {
             res.redirect("/thread/" + Integer.toString(avausid));
             return ""; 
         });
+
     }
 }

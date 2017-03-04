@@ -4,6 +4,7 @@
     <head>
         <title>Forum</title>
         <meta charset="utf-8" />
+        <link rel="stylesheet" href="/style.css" type="text/css" />
     </head>
 
     <body>
@@ -17,8 +18,8 @@
             <tbody>
                 <tr th:each="ka : ${keskustelualueet}">
                     <td><a th:href="${'/topic/' + ka[0]}"><span th:text="${ka[1]}"></span></a></td>
-                    <td th:text="${ka[2]}"></td>
-                    <td th:text="${ka[3]}"></td>
+                    <td class="center" th:text="${ka[2]}"></td>
+                    <td class="center" th:text="${ka[3]}"></td>
                     <td th:text="${ka[4]}"></td>
                    
                 </tr>
