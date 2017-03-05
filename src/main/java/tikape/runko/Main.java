@@ -32,6 +32,13 @@ public class Main {
             List<List> ka = kaDao.lukumaaratPerKA();
 
             map.put("keskustelualueet", ka);
+            
+            if(req.queryParams("warn") == null ||
+                    req.queryParams("warn").equals("false")) {
+                map.put("warn", false);
+            } else if (req.queryParams("warn").equals("true")) {
+                map.put("warn", true);
+            } 
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
@@ -94,11 +101,11 @@ public class Main {
                 vd.addOne(alueenId, avauksenId,
                     req.queryParams("name"), req.queryParams("aloitus"));
             } catch (Throwable t) {
-                res.redirect("/");
+                res.redirect("/?warn=true");
                 return "";
             }
             
-            res.redirect("/");
+            res.redirect("/?warn=false");
             return "";
         });
         
