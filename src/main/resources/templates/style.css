@@ -43,6 +43,14 @@ thead {
     text-align: left;
 }
 
+.aika {
+    width: 11ex;
+}
+
+#nimimerkki {
+    width: 20ex;
+}
+
 .nav {
     text-align: center;
 }
