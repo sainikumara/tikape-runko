@@ -41,18 +41,27 @@ public class Database {
             lauseet = sqliteLauseet();
         }
 
-        // "try with resources" sulkee resurssin automaattisesti lopuksi
         try (Connection conn = getConnection()) {
             Statement st = conn.createStatement();
-
-            // suoritetaan komennot
-            for (String lause : lauseet) {
-                System.out.println("Running command >> " + lause);
-                st.executeUpdate(lause);
-            }
-
+            System.out.println("Running command >> " + lauseet.get(0));
+            st.executeUpdate(lauseet.get(0));
         } catch (Throwable t) {
-            // jos tietokantataulu on jo olemassa, ei komentoja suoriteta
+            System.out.println("Error >> " + t.getMessage());
+        }
+        
+        try (Connection conn = getConnection()) {
+            Statement st = conn.createStatement();
+            System.out.println("Running command >> " + lauseet.get(1));
+            st.executeUpdate(lauseet.get(1));
+        } catch (Throwable t) {
+            System.out.println("Error >> " + t.getMessage());
+        }
+        
+        try (Connection conn = getConnection()) {
+            Statement st = conn.createStatement();
+            System.out.println("Running command >> " + lauseet.get(2));
+            st.executeUpdate(lauseet.get(2));
+        } catch (Throwable t) {
             System.out.println("Error >> " + t.getMessage());
         }
     }
