@@ -113,7 +113,8 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
                 + "MAX (Viesti.aika) AS uusin "
                 + "FROM Keskustelualue JOIN Viesti "
                 + "ON Keskustelualue.id = Viesti.alue "
-                + "GROUP BY Viesti.alue");
+                + "GROUP BY Viesti.alue "
+                + "ORDER BY aihe ASC");
         
         ResultSet rs = stmt.executeQuery();
         List<List> keskustelualueet = new ArrayList<>();

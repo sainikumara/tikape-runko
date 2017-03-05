@@ -60,7 +60,7 @@ public class Main {
             
 
             List<List> avaukset
-                    = avausDao.lukumaaraPerKeskustelunavaus(Integer.parseInt(req.params(":id")));
+                    = avausDao.lukumaaraPerKeskustelunavaus(Integer.parseInt(req.params(":id")), 1);
             
             map.put("alueId", alue.getId());
             map.put("aihe", aihe);

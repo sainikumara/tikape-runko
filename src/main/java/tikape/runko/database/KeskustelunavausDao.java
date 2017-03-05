@@ -72,7 +72,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         return keskustelunavaukset;
     }
 
-    public List<List> lukumaaraPerKeskustelunavaus(Integer alue) throws SQLException {
+    public List<List> lukumaaraPerKeskustelunavaus(Integer alue, Integer sivu) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT "
                 + "Keskustelunavaus.id AS id, "
@@ -83,9 +83,12 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
                 + "ON Viesti.avaus=Keskustelunavaus.id "
                 + "AND Keskustelunavaus.alue = ? "
                 + "GROUP BY Viesti.avaus "
-                + "ORDER BY uusin");
+                + "ORDER BY uusin DESC "
+                + "LIMIT 10 OFFSET ?");
 
         stmt.setObject(1, alue);
+        stmt.setObject(2, (sivu - 1) * 10);
+        
 
         ResultSet rs = stmt.executeQuery();
 
