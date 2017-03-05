@@ -166,6 +166,7 @@ public class Main {
         post("topic/uusiavaus", (req, res) -> {
             if (req.queryParams("msg").length() > 1000) {
                 res.redirect("/topic/?longmsg=true");
+                return "";
             }
             int alueid = Integer.parseInt(req.queryParams("alueId"));
             int avausid = avausDao.addOne(alueid, req.queryParams("title"));
