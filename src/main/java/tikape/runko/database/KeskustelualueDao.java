@@ -69,7 +69,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(*) AS lukumaara FROM Keskustelualue");
 
         ResultSet rs = stmt.executeQuery();
-
+        rs.next();
         return rs.getInt("lukumaara");
     }
 
