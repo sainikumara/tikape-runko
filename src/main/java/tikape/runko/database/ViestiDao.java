@@ -78,16 +78,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             String kirjoittajanNimimerkki, String viestinSisalto) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                 "INSERT INTO Viesti (alue, avaus, nimimerkki, sisalto, aika) " +
-                 "VALUES (?, ?, ?, ?, ?)");
+                 "INSERT INTO Viesti (alue, avaus, nimimerkki, sisalto) " +
+                 "VALUES (?, ?, ?, ?)");
        
-        Timestamp currentTime = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()/1000);
-
         stmt.setObject(1, viestinAlue);
         stmt.setObject(2, viestinAvaus);
         stmt.setObject(3, kirjoittajanNimimerkki);
         stmt.setObject(4, viestinSisalto);
-        stmt.setTimestamp(5, currentTime);
         stmt.execute();
         
         stmt.close();
