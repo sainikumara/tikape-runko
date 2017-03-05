@@ -9,7 +9,8 @@
 
     <body>
         <h1><a href="/">TIKAPE-KESKUSTELUFOORUMI</a></h1>
-        <h2 th:text="${aihe}"></h2>
+        <h2><a href="/">Etusivu</a> / 
+           <span th:text="${aihe}"></span></h2>
         <table>
             <thead>
                 <tr>
@@ -24,7 +25,7 @@
                 </tr>
             </tbody>
         </table>
-        
+
         <div class="lomake">
             <form method="POST" th:action="@{~/topic/uusiavaus(alueId=${alueId})}">
                 <div>
@@ -39,6 +40,6 @@
                 <input type="submit" name="button" value="lis&#228;&#228; keskustelunavaus"/>
             </form>
         </div>
-        
+
     </body>
 </html>
