@@ -18,7 +18,7 @@ import tikape.runko.domain.Keskustelunavaus;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("jdbc:sqlite:foorumi.db");
+        Database database = new Database("jdbc:sqlite:foorumi1.db");
         database.init();
         
         Spark.staticFileLocation("/templates");
