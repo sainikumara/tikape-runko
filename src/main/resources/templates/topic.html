@@ -29,12 +29,12 @@
             <form method="POST" th:action="@{~/topic/uusiavaus(alueId=${alueId})}">
                 <div>
                     <span>Nimimerkki:</span>
-                    <input type="text" name="name"></input>
+                    <input type="text" name="name" maxlength="20" required="true"></input>
                     <span>Keskustelun otsikko:</span>
-                    <input type="text" name="title"/>
+                    <input type="text" name="title" maxlength="50" required="true"/>
                 </div>
                 <div>
-                    <textarea id="msg" class="text" cols="50" rows="20" name="msg">aloitusviesti</textarea>
+                    <textarea id="msg" class="text" cols="50" rows="20" name="msg" required="true">aloitusviesti</textarea>
                 </div>
                 <input type="submit" name="button" value="lis&#228;&#228; keskustelunavaus"/>
             </form>

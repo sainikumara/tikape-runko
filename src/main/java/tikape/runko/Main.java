@@ -90,6 +90,7 @@ public class Main {
             try {
                 int alueenId = kaDao.addOne(req.queryParams("topic"));
                 int avauksenId = avausDao.addOne(alueenId, "Alueen kuvaus");
+                System.out.println("????????????????????????");
                 vd.addOne(alueenId, avauksenId,
                     req.queryParams("name"), req.queryParams("aloitus"));
             } catch (Throwable t) {

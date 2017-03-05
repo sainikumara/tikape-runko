@@ -30,12 +30,12 @@
             <form method="POST" th:action="@{~/uusialue}">
                 <div>
                     <span>Nimimerkki: </span>
-                    <input type="text" name="name"></input>
+                    <input type="text" name="name" maxlength="20" required="true"/>
                     <span> Uuden alueen nimi: </span>
-                    <input type="text" name="topic"/>
+                    <input type="text" name="topic" maxlength="50" required="true"/>
                 </div>
                 <div>
-                    <textarea id="aloitus" class="text" name="aloitus">Anna lyhyt kuvaus alueesta</textarea>
+                    <textarea id="aloitus" class="text" name="aloitus" required="true">Anna lyhyt kuvaus alueesta</textarea>
                 </div>
                 <input type="submit" name="button" value="lis&#228;&#228; keskustelualue"/>
             </form>
