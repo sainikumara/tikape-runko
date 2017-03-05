@@ -18,7 +18,16 @@ import tikape.runko.domain.Keskustelunavaus;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("jdbc:sqlite:foorumi1.db");
+        if (System.getenv("PORT") != null) {
+            port(Integer.valueOf(System.getenv("PORT")));
+        }
+        String dbosoite = "jdbc:sqlite:foorumi.db";
+        
+        if (System.getenv("DATABASE_URL") != null) {
+            dbosoite = System.getenv("DATABASE_URL");
+        }
+        
+        Database database = new Database(dbosoite);
         database.init();
         
         Spark.staticFileLocation("/templates");

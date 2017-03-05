@@ -18,7 +18,13 @@ public class Database {
     }
 
     public void init() {
-        List<String> lauseet = sqliteLauseet();
+        List<String> lauseet = null;
+        
+        if (this.databaseAddress.contains("postgres")) {
+            lauseet = postgreLauseet();
+        } else {
+            lauseet = sqliteLauseet();
+        }
 
         // "try with resources" sulkee resurssin automaattisesti lopuksi
         try (Connection conn = getConnection()) {
@@ -34,6 +40,27 @@ public class Database {
             // jos tietokantataulu on jo olemassa, ei komentoja suoriteta
             System.out.println("Error >> " + t.getMessage());
         }
+    }
+    
+    private List<String> postgreLauseet() {
+        ArrayList<String> lista = new ArrayList<>();
+        
+        lista.add("CREATE TABLE Keskustelualue (" 
+                + "id SERIAL PRIMARY KEY NOT NULL, "
+                + "aihe varchar(50) NOT NULL UNIQUE);");
+        lista.add("CREATE TABLE Keskustelunavaus ("
+                + "id SERIAL PRIMARY KEY NOT NULL, "
+                + "alue integer NOT NULL REFERENCES Keskustelualue(id), "
+                + "aika timestamp, "
+                + "otsikko varchar(200) NOT NULL;");
+        lista.add("CREATE TABLE Viesti ("
+                + "id SERIAL PRIMARY KEY, "
+                + "alue integer NOT NULL REFERENCES Keskustelualue(id), "
+                + "avaus integer NOT NULL REFERENCES Keskustelunavaus(id), "
+                + "aika timestamp, "
+                + "nimimerkki varchar(20) NOT NULL, "
+                + "sisalto varchar(1000) NOT NULL;");
+        return lista;
     }
 
     private List<String> sqliteLauseet() {
