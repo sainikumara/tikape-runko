@@ -28,10 +28,10 @@
         <div class="lomake">
             <form method="POST" th:action="@{~/topic/uusiavaus(alueId=${alueId})}">
                 <div>
-                    <span>Nimimerkki:</span>
-                    <input type="text" name="name" maxlength="20" required="true"></input>
-                    <span>Keskustelun otsikko:</span>
-                    <input type="text" name="title" maxlength="50" required="true"/>
+                    <span>Nimimerkki:</span><br/>
+                    <input type="text" name="name" maxlength="20" required="true"></input><br/>
+                    <span>Keskustelun otsikko:</span><br/>
+                    <input type="text" name="title" maxlength="50" required="true"/><br/>
                 </div>
                 <div>
                     <textarea id="msg" class="text" cols="50" rows="20" name="msg" required="true">aloitusviesti</textarea>
