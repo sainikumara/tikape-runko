@@ -67,14 +67,14 @@ public class Database {
                 + "id SERIAL PRIMARY KEY NOT NULL, "
                 + "alue integer NOT NULL REFERENCES Keskustelualue(id), "
                 + "aika timestamp, "
-                + "otsikko varchar(200) NOT NULL;");
+                + "otsikko varchar(200) NOT NULL);");
         lista.add("CREATE TABLE Viesti ("
                 + "id SERIAL PRIMARY KEY, "
                 + "alue integer NOT NULL REFERENCES Keskustelualue(id), "
                 + "avaus integer NOT NULL REFERENCES Keskustelunavaus(id), "
                 + "aika timestamp, "
                 + "nimimerkki varchar(20) NOT NULL, "
-                + "sisalto varchar(1000) NOT NULL;");
+                + "sisalto varchar(1000) NOT NULL);");
         return lista;
     }
 
