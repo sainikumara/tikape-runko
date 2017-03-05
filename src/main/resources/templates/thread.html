@@ -37,7 +37,7 @@
             <form method="POST" th:action="@{~/msg(alue=${alueenId},avaus=${avauksenId},sivu=${sivu})}">
                 <label>Nimimerkki: </label><br/>
                 <input type="text" name="name" maxlength="20" required="true"/><br/>
-                <textarea id="message" class="text" cols="70" rows ="20" name="message" required="true">kirjoita viesti t&#228;h&#228;n</textarea>
+                <textarea id="message" class="text" cols="70" rows ="20" name="message" maxlength="1000" required="true">kirjoita viesti t&#228;h&#228;n</textarea>
                 <input type="submit" name="button" value="l&#228;het&#228; viesti"/>
             </form>
         </div>
