@@ -82,7 +82,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
                 + "FROM Keskustelunavaus JOIN Viesti "
                 + "ON Viesti.avaus=Keskustelunavaus.id "
                 + "AND Keskustelunavaus.alue = ? "
-                + "GROUP BY Viesti.avaus "
+                + "GROUP BY Viesti.avaus, Keskustelunavaus.id "
                 + "ORDER BY uusin DESC "
                 + "LIMIT 10 OFFSET ?");
 
