@@ -134,7 +134,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         stmt.setTimestamp(3, currentTime);
         stmt.execute();
         
-        ResultSet rs = stmt.getGeneratedKeys();
+        ResultSet rs = stmt.getResultSet();
         
         int avauksenId = -1;
         
@@ -144,6 +144,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
         stmt.close();       
         connection.close();
+        rs.close();
         
         return avauksenId;
     }

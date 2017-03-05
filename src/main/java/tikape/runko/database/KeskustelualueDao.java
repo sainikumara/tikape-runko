@@ -65,15 +65,14 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
     
     public Integer addOne(String aihe) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelualue (aihe) VALUES (?)");
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelualue (aihe) VALUES (?) RETURNING id");
         
         stmt.setString(1, aihe);
-        
         stmt.execute();
         
         int alueenId = -1;
         
-        ResultSet rs = stmt.getGeneratedKeys();
+        ResultSet rs = stmt.getResultSet();
         if (rs.next()) {
             alueenId = rs.getInt(1);
         }
