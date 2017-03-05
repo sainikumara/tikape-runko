@@ -164,11 +164,11 @@ public class Main {
         });
 
         post("topic/uusiavaus", (req, res) -> {
+            int alueid = Integer.parseInt(req.queryParams("alueId"));
             if (req.queryParams("msg").length() > 1000) {
-                res.redirect("/topic/?longmsg=true");
+                res.redirect("/topic/" + Integer.toString(alueid) + "?longmsg=true");
                 return "";
             }
-            int alueid = Integer.parseInt(req.queryParams("alueId"));
             int avausid = avausDao.addOne(alueid, req.queryParams("title"));
             vd.addOne(alueid, avausid,
                     req.queryParams("name"), req.queryParams("msg"));
