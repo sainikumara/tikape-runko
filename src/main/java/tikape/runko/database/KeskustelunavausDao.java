@@ -71,6 +71,15 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
         return keskustelunavaukset;
     }
+    
+    public Integer numberOf() throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(*) AS lukumaara FROM Keskustelunavaus");
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        return rs.getInt("lukumaara");
+    }
 
     public List<List> lukumaaraPerKeskustelunavaus(Integer alue, Integer sivu) throws SQLException {
         Connection connection = database.getConnection();

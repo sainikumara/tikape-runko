@@ -60,19 +60,23 @@ public class Main {
 
         get("/topic/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-
             
             if (req.queryParams("longmsg") == null) {
                 map.put("longmsg", false);
             } else {
                 map.put("longmsg", true);
             }
+            int alueenId = Integer.parseInt(req.params(":id"));
             
-            Keskustelualue alue = kaDao.findOne(Integer.parseInt(req.params(":id")));
+            if (alueenId < 1 || alueenId > kaDao.numberOf()) {
+                res.redirect("/");
+            }
+            
+            Keskustelualue alue = kaDao.findOne(alueenId);
             String aihe = alue.getAihe();
 
             List<List> avaukset
-                    = avausDao.lukumaaraPerKeskustelunavaus(Integer.parseInt(req.params(":id")), 1);
+                    = avausDao.lukumaaraPerKeskustelunavaus(alueenId, 1);
 
             map.put("alueId", alue.getId());
             map.put("aihe", aihe);
@@ -84,6 +88,11 @@ public class Main {
         get("/thread/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             int avauksenId = Integer.parseInt(req.params(":id"));
+            
+            if (avauksenId < 1 || avauksenId > avausDao.numberOf()) {
+                res.redirect("/");
+            }
+            
             Keskustelunavaus avaus = avausDao.findOne(avauksenId);
             int alueenId = avaus.getAlue();
 

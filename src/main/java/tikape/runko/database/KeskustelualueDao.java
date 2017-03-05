@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import tikape.runko.domain.Keskustelualue;
 
 public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
-    
+
     private Database database;
 
     public KeskustelualueDao(Database uusiDatabase) {
@@ -63,25 +63,34 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
 
         return keskustelualueet;
     }
-    
+
+    public Integer numberOf() throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(*) AS lukumaara FROM Keskustelualue");
+
+        ResultSet rs = stmt.executeQuery();
+
+        return rs.getInt("lukumaara");
+    }
+
     public Integer addOne(String aihe) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelualue (aihe) VALUES (?) RETURNING id");
-        
+
         stmt.setString(1, aihe);
         stmt.execute();
-        
+
         int alueenId = -1;
-        
+
         ResultSet rs = stmt.getResultSet();
         if (rs.next()) {
             alueenId = rs.getInt(1);
         }
-        
+
         rs.close();
         stmt.close();
         connection.close();
-        
+
         return alueenId;
     }
 
@@ -91,21 +100,21 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         PreparedStatement stmt1 = connection.prepareStatement("DELETE FROM Viesti WHERE alue = ?");
         PreparedStatement stmt2 = connection.prepareStatement("DELETE FROM Keskustelunavaus WHERE alue = ?");
         PreparedStatement stmt3 = connection.prepareStatement("DELETE FROM Keskustelualue WHERE alue = ?");
-        
+
         stmt1.setObject(1, key);
         stmt2.setObject(1, key);
         stmt3.setObject(1, key);
-        
+
         stmt1.execute();
         stmt2.execute();
         stmt3.execute();
-        
+
         stmt1.close();
         stmt2.close();
         stmt3.close();
         connection.close();
     }
-    
+
     // Tämän metodin avulla saadaan etusivulle keskustelualueittain avauksien ja
     // viestien lukumäärät ja uusimpien viestien lähetysajankohdat
     public List<List> lukumaaratPerKA() throws SQLException {
@@ -120,55 +129,55 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
                 + "ON Keskustelualue.id = Viesti.alue "
                 + "GROUP BY Viesti.alue, Keskustelualue.id "
                 + "ORDER BY aihe ASC");
-        
+
         ResultSet rs = stmt.executeQuery();
         List<List> keskustelualueet = new ArrayList<>();
-        
+
         while (rs.next()) {
             String id = rs.getString("id");
             String aihe = rs.getString("aihe");
             String avauksia = rs.getString("avauksia");
             String viesteja = rs.getString("viesteja");
             Timestamp uusin = rs.getTimestamp("uusin");
-            
+
             // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
             // Date timestamp = new Date(uusin * 1000);
             String uusinStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(uusin);
-            
+
             List<String> kaTiedot = new ArrayList<>();
             kaTiedot.add(id);
             kaTiedot.add(aihe);
             kaTiedot.add(avauksia);
             kaTiedot.add(viesteja);
             kaTiedot.add(uusinStr);
-            
+
             keskustelualueet.add(kaTiedot);
         }
-        
+
         rs.close();
         stmt.close();
         connection.close();
-        
+
         return keskustelualueet;
     }
-    
+
     public Integer getIdByTopic(String topic) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT id FROM Keskustelualue WHERE aihe = ?");
         stmt.setObject(1, topic);
         ResultSet rs = stmt.executeQuery();
-        
+
         boolean hasOne = rs.next();
         if (!hasOne) {
             return null;
         }
-        
+
         int id = rs.getInt("id");
-        
+
         rs.close();
         stmt.close();
         connection.close();
-        
+
         return id;
     }
 }

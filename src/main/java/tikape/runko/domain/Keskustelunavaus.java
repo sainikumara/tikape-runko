@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.runko.domain;
 
 import java.sql.Timestamp;
 
-/**
- *
- * @author lvikstro
- */
 public class Keskustelunavaus {
     private int id;
     private int alue;
