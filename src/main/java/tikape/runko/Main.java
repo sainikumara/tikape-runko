@@ -124,8 +124,6 @@ public class Main {
                 vd.addOne(alueenId, avauksenId,
                         req.queryParams("name"), req.queryParams("aloitus"));
             } catch (Throwable t) {
-                System.out.println("!=!=!=!=!=!=!=!=!==!");
-                t.printStackTrace();
                 res.redirect("/?warn=true");
                 return "";
             }
