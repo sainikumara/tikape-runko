@@ -75,13 +75,13 @@ public class Database {
         lista.add("CREATE TABLE Keskustelunavaus ("
                 + "id SERIAL PRIMARY KEY NOT NULL, "
                 + "alue integer NOT NULL REFERENCES Keskustelualue(id), "
-                + "aika timestamp WITHOUT time zone DEFAULT (now() at time zone 'sst'), "
+                + "aika timestamp WITH time zone DEFAULT now(), "
                 + "otsikko varchar(200) NOT NULL);");
         lista.add("CREATE TABLE Viesti ("
                 + "id SERIAL PRIMARY KEY, "
                 + "alue integer NOT NULL REFERENCES Keskustelualue(id), "
                 + "avaus integer NOT NULL REFERENCES Keskustelunavaus(id), "
-                + "aika timestamp WITHOUT time zone DEFAULT (now() at time zone 'sst'), "
+                + "aika timestamp WITH time zone DEFAULT now(), "
                 + "nimimerkki varchar(20) NOT NULL, "
                 + "sisalto varchar(1000) NOT NULL);");
         return lista;
