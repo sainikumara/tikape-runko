@@ -71,10 +71,14 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         
         stmt.execute();
         
-        ResultSet rs = stmt.getGeneratedKeys();
-        rs.next();
-        int alueenId = rs.getInt(1);
+        int alueenId = -1;
         
+        ResultSet rs = stmt.getGeneratedKeys();
+        if (rs.next()) {
+            alueenId = rs.getInt(1);
+        }
+        
+        rs.close();
         stmt.close();
         connection.close();
         
