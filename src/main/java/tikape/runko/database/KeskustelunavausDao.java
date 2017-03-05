@@ -77,7 +77,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(*) AS lukumaara FROM Keskustelunavaus");
         
         ResultSet rs = stmt.executeQuery();
-        
+        rs.next();
         return rs.getInt("lukumaara");
     }
 
