@@ -35,10 +35,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         Integer id = rs.getInt("id");
         int alue = rs.getInt("alue");
         int avaus = rs.getInt("avaus");
-        int aika = rs.getInt("aika");
+        Timestamp aika = rs.getTimestamp("aika");
         String nimimerkki = rs.getString("nimimerkki");
         String sisalto = rs.getString("sisalto");
-        
         Viesti v = new Viesti(id, alue, avaus, aika, nimimerkki, sisalto);
 
         rs.close();
@@ -59,7 +58,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             Integer id = rs.getInt("id");
             int alue = rs.getInt("alue");
             int avaus = rs.getInt("avaus");
-            int aika = rs.getInt("aika");
+            Timestamp aika = rs.getTimestamp("aika");
             String nimimerkki = rs.getString("nimimerkki");
             String sisalto = rs.getString("sisalto");
         
@@ -130,7 +129,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             Integer id = rs.getInt("id");
             int alue = rs.getInt("alue");
             int avaus = rs.getInt("avaus");
-            int aika = rs.getInt("aika");
+            Timestamp aika = rs.getTimestamp("aika");
             String nimimerkki = rs.getString("nimimerkki");
             String sisalto = rs.getString("sisalto");
         

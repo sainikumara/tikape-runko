@@ -5,6 +5,8 @@
  */
 package tikape.runko.domain;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author lvikstro
@@ -12,10 +14,10 @@ package tikape.runko.domain;
 public class Keskustelunavaus {
     private int id;
     private int alue;
-    private int aika; 
+    private Timestamp aika; 
     private String otsikko;
 
-    public Keskustelunavaus(int id, int alue, int aika, String otsikko) {
+    public Keskustelunavaus(int id, int alue, Timestamp aika, String otsikko) {
         this.id= id;
         this.alue= alue;
         this.aika= aika;
@@ -30,7 +32,7 @@ public class Keskustelunavaus {
         this.alue = alue;
     }
 
-    public void setAika(int aika) {
+    public void setAika(Timestamp aika) {
         this.aika = aika;
     }
 
@@ -47,7 +49,7 @@ public class Keskustelunavaus {
         return alue;
     }
 
-    public int getAika() {
+    public Timestamp getAika() {
         return aika;
     }
 

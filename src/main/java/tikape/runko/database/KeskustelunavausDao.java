@@ -36,7 +36,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
 
         Integer id = rs.getInt("id");
         Integer alue = rs.getInt("alue");
-        Integer aika = rs.getInt("aika");
+        Timestamp aika = rs.getTimestamp("aika");
         String otsikko = rs.getString("otsikko");
 
         Keskustelunavaus k = new Keskustelunavaus(id, alue, aika, otsikko);
@@ -59,7 +59,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         while (rs.next()) {
             Integer id = rs.getInt("id");
             Integer alue = rs.getInt("alue");
-            Integer aika = rs.getInt("aika");
+            Timestamp aika = rs.getTimestamp("aika");
             String otsikko = rs.getString("otsikko");
 
             keskustelunavaukset.add(new Keskustelunavaus(id, alue, aika, otsikko));
@@ -172,7 +172,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         while (rs.next()) {
             Integer id = rs.getInt("id");
             Integer alue = rs.getInt("alue");
-            Integer aika = rs.getInt("aika");
+            Timestamp aika = rs.getTimestamp("aika");
             String otsikko = rs.getString("otsikko");
 
             keskustelunavaukset.add(new Keskustelunavaus(id, alue, aika, otsikko));

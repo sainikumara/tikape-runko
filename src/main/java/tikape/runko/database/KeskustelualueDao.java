@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -128,11 +129,11 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
             String aihe = rs.getString("aihe");
             String avauksia = rs.getString("avauksia");
             String viesteja = rs.getString("viesteja");
-            long uusin = rs.getLong("uusin");
+            Timestamp uusin = rs.getTimestamp("uusin");
             
             // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
-            Date timestamp = new Date(uusin * 1000);
-            String uusinStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
+            // Date timestamp = new Date(uusin * 1000);
+            String uusinStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(uusin);
             
             List<String> kaTiedot = new ArrayList<>();
             kaTiedot.add(id);
@@ -143,7 +144,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
             
             keskustelualueet.add(kaTiedot);
         }
-
+        
         rs.close();
         stmt.close();
         connection.close();
