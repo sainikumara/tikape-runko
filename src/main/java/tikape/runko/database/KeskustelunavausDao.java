@@ -78,6 +78,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         
         ResultSet rs = stmt.executeQuery();
         rs.next();
+        connection.close();
         return rs.getInt("lukumaara");
     }
 

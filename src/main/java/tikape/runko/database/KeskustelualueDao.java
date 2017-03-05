@@ -70,6 +70,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
 
         ResultSet rs = stmt.executeQuery();
         rs.next();
+        connection.close();
         return rs.getInt("lukumaara");
     }
 
