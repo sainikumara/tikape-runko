@@ -105,7 +105,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
     // viestien lukumäärät ja uusimpien viestien lähetysajankohdat
     public List<List> lukumaaratPerKA() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT ON (Keskustelualue.id) "
+        PreparedStatement stmt = connection.prepareStatement("SELECT "
                 + "Keskustelualue.id AS id, "
                 + "Keskustelualue.aihe AS aihe, "
                 + "COUNT (DISTINCT Viesti.avaus) AS avauksia, "
@@ -113,7 +113,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
                 + "MAX (Viesti.aika) AS uusin "
                 + "FROM Keskustelualue JOIN Viesti "
                 + "ON Keskustelualue.id = Viesti.alue "
-                + "ORDER BY uusin");
+                + "GROUP BY Viesti.alue");
         
         ResultSet rs = stmt.executeQuery();
         List<List> keskustelualueet = new ArrayList<>();
