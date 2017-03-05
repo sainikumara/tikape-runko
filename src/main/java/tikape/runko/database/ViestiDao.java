@@ -146,11 +146,15 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return keskustelualueet;
     }
     
-    public List<List> findAllInThread(int threadid) throws SQLException {
+    public List<List> findAllInThread(int threadid, int sivu) throws SQLException {
         Connection connection = database.getConnection();
         
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE avaus = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * "
+                + "FROM Viesti WHERE avaus = ? "
+                + "LIMIT 20 OFFSET ?");
         stmt.setObject(1, threadid);
+        stmt.setObject(2, (sivu - 1) * 20);
+        
         ResultSet rs = stmt.executeQuery();
          
         List<List> viestit = new ArrayList<>();

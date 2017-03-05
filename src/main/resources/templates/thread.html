@@ -25,9 +25,14 @@
                 </tr>
             </tbody>
         </table>
+        
+        <div class="nav">
+            <a th:href="${'/thread/' + avauksenId + '?sivu=' + edellinen}">Edelliset viestit</a>
+            <a th:href="${'/thread/' + avauksenId + '?sivu=' + seuraava}">Seuraavat viestit</a>
+        </div>
 
         <div class="lomake">
-            <form method="POST" th:action="@{~/msg(alue=${alueenId},avaus=${avauksenId})}">
+            <form method="POST" th:action="@{~/msg(alue=${alueenId},avaus=${avauksenId},sivu=${sivu})}">
                 <label>Nimimerkki: </label><br/>
                 <input type="text" name="name" maxlength="20" required="true"/><br/>
                 <textarea id="message" class="text" cols="70" rows ="20" name="message" required="true">kirjoita viesti t&#228;h&#228;n</textarea>

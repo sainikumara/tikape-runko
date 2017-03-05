@@ -22,6 +22,7 @@ a {
 
 table {
     margin: auto;
+    margin-bottom: 10px;
     width: 70%;
     padding: 10px;
     background-color: #d7ff8e;
@@ -42,16 +43,16 @@ thead {
     text-align: left;
 }
 
+.nav {
+    text-align: center;
+}
+
 .lomake {
     margin: auto;
     margin-top: 20px;
     width: 50%;
     padding: 10px;
     text-align: left;
-}
-
-[name=topic] {
-    right: 0px;
 }
 
 .text {
