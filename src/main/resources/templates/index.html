@@ -29,15 +29,15 @@
         <div class="lomake">
             <form method="POST" th:action="@{~/uusialue}">
                 <div>
-                    <span>Uuden alueen nimi: </span>
+                    <span>Nimimerkki: </span>
+                    <input type="text" name="name"></input>
+                    <span> Uuden alueen nimi: </span>
                     <input type="text" name="topic"/>
                 </div>
                 <div>
-                    <textarea id="aloitus" class="text" cols="50" rows="20" name="aloitus">Anna lyhyt kuvaus alueesta</textarea>
+                    <textarea id="aloitus" class="text" name="aloitus">Anna lyhyt kuvaus alueesta</textarea>
                 </div>
-                <span>Nimimerkki:</span>
-                <input type="text" name="name"></input>
-                <input type="submit" value="lis&#228;&#228; keskustelualue"/>
+                <input type="submit" name="button" value="lis&#228;&#228; keskustelualue"/>
             </form>
         </div>
     </body>

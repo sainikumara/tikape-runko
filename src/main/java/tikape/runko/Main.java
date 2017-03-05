@@ -97,12 +97,6 @@ public class Main {
                 return "";
             }
             
-            //int alueid = kaDao.getIdByTopic(req.queryParams("topic"));
-            //avausDao.addOne(alueid, "Alueen kuvaus");
-            //int avausid = avausDao.getIdByTitle("Alueen kuvaus");
-            //vd.addOne(alueid, avausid,
-            //        req.queryParams("name"), req.queryParams("aloitus"));
-            
             res.redirect("/");
             return "";
         });
@@ -110,7 +104,6 @@ public class Main {
         post("topic/uusiavaus", (req, res) -> {
             int alueid = Integer.parseInt(req.queryParams("alueId"));
             int avausid = avausDao.addOne(alueid, req.queryParams("title"));
-            //int avausid = avausDao.getIdByTitle(req.queryParams("title"));
             vd.addOne(alueid, avausid,
                     req.queryParams("name"), req.queryParams("msg"));
             res.redirect("/thread/" + Integer.toString(avausid));
