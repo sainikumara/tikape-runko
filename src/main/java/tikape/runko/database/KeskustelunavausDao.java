@@ -135,7 +135,12 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         stmt.execute();
         
         ResultSet rs = stmt.getGeneratedKeys();
-        int avauksenId = rs.getInt(1);
+        
+        int avauksenId = -1;
+        
+        if (rs.next()) {
+            avauksenId = rs.getInt(1);
+        }
 
         stmt.close();       
         connection.close();
