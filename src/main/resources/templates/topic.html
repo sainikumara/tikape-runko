@@ -40,6 +40,8 @@
                 <input type="submit" name="button" value="lis&#228;&#228; keskustelunavaus"/>
             </form>
         </div>
+        
+        <h2 th:if="${longmsg} == true">Liian pitkä aloitusviesti! (max. 1000 merkkiä)</h2>
 
     </body>
 </html>

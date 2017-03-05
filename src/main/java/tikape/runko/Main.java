@@ -42,6 +42,12 @@ public class Main {
 
             map.put("keskustelualueet", ka);
 
+            if (req.queryParams("longmsg") == null) {
+                map.put("longmsg", false);
+            } else {
+                map.put("longmsg", true);
+            }
+            
             if (req.queryParams("warn") == null
                     || req.queryParams("warn").equals("false")) {
                 map.put("warn", false);
@@ -55,6 +61,13 @@ public class Main {
         get("/topic/:id", (req, res) -> {
             HashMap map = new HashMap<>();
 
+            
+            if (req.queryParams("longmsg") == null) {
+                map.put("longmsg", false);
+            } else {
+                map.put("longmsg", true);
+            }
+            
             Keskustelualue alue = kaDao.findOne(Integer.parseInt(req.params(":id")));
             String aihe = alue.getAihe();
 
@@ -118,6 +131,7 @@ public class Main {
             if (req.queryParams("message").length() > 1000) {
                 res.redirect("/thread/" + req.queryParams("avaus") + "?sivu=" 
                         + req.queryParams("sivu") + "&longmsg=true");
+                return "";
             }
             
             vd.addOne(Integer.parseInt(req.queryParams("alue")),
@@ -129,6 +143,11 @@ public class Main {
         });
 
         post("/uusialue", (req, res) -> {
+            if (req.queryParams("aloitus").length() > 1000) {
+                res.redirect("/?longmsg=true");
+                return "";
+            }
+            
             try {
                 int alueenId = kaDao.addOne(req.queryParams("topic"));
                 int avauksenId = avausDao.addOne(alueenId, "Alueen kuvaus");
@@ -145,6 +164,9 @@ public class Main {
         });
 
         post("topic/uusiavaus", (req, res) -> {
+            if (req.queryParams("msg").length() > 1000) {
+                res.redirect("/topic/?longmsg=true");
+            }
             int alueid = Integer.parseInt(req.queryParams("alueId"));
             int avausid = avausDao.addOne(alueid, req.queryParams("title"));
             vd.addOne(alueid, avausid,
