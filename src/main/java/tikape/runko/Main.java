@@ -97,6 +97,12 @@ public class Main {
             map.put("aihe", aihe);
             map.put("avauksenId", avauksenId);
             map.put("otsikko", otsikko);
+            
+            if (req.queryParams("longmsg") == null) {
+                map.put("longmsg", false);
+            } else {
+                map.put("longmsg", true);
+            }
 
             List<List> viestit = vd.findAllInThread(avauksenId, sivunumero);
 
@@ -109,6 +115,11 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         post("/msg", (req, res) -> {
+            if (req.queryParams("message").length() > 1000) {
+                res.redirect("/thread/" + req.queryParams("avaus") + "?sivu=" 
+                        + req.queryParams("sivu") + "&longmsg=true");
+            }
+            
             vd.addOne(Integer.parseInt(req.queryParams("alue")),
                     Integer.parseInt(req.queryParams("avaus")),
                     req.queryParams("name"),

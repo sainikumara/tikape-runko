@@ -41,5 +41,8 @@
                 <input type="submit" name="button" value="l&#228;het&#228; viesti"/>
             </form>
         </div>
+        
+        <h2 th:if="${longmsg} == true">Liian pitkä viesti! (max. 1000 merkkiä)</h2>
+
     </body>
 </html>
