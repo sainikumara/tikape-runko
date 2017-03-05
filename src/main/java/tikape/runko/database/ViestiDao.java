@@ -159,9 +159,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         List<List> viestit = new ArrayList<>();
         while (rs.next()) {
             List<String> tiedot = new ArrayList<>();
-            long aika = rs.getLong("aika");
-            Date timestamp = new Date(aika * 1000);
-            String aikastr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
+            Timestamp aika = rs.getTimestamp("aika");
+            String aikastr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(aika);
             
             tiedot.add(rs.getString("id"));
             tiedot.add(rs.getString("alue"));

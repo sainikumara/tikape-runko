@@ -98,11 +98,11 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
             String id = rs.getString("id");
             String avaus = rs.getString("avaus");
             String viesteja = rs.getString("viesteja");
-            long uusin = rs.getLong("uusin");
+            Timestamp uusin = rs.getTimestamp("uusin");
 
             // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
-            Date timestamp = new Date(uusin * 1000);
-            String uusinStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
+            // Date timestamp = new Date(uusin * 1000);
+            String uusinStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(uusin);
 
             List<String> tiedot = new ArrayList<>();
             
