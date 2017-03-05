@@ -72,7 +72,7 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         stmt.execute();
         
         ResultSet rs = stmt.getGeneratedKeys();
-        rs.first();
+        rs.next();
         int alueenId = rs.getInt(1);
         
         stmt.close();
